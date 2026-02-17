@@ -33,243 +33,196 @@
     min-height: 100vh;
   }
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  .container { max-width: 1200px; margin: 0 auto; }
 
-  header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
+  header { text-align: center; margin-bottom: 60px; }
 
   header h1 {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 8px;
+    font-size: 13px; font-weight: 500; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
   }
 
   header h2 {
-    font-size: 36px;
-    font-weight: 300;
-    letter-spacing: -0.5px;
-    color: var(--text);
+    font-size: 36px; font-weight: 300; letter-spacing: -0.5px; color: var(--text);
   }
 
-  header .subtitle {
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-top: 8px;
-  }
+  header .subtitle { font-size: 14px; color: var(--text-muted); margin-top: 8px; }
 
-  .stats {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 24px;
-  }
-
-  .stat {
-    text-align: center;
-  }
-
-  .stat-value {
-    font-size: 28px;
-    font-weight: 300;
-    color: var(--text);
-  }
-
+  .stats { display: flex; justify-content: center; gap: 40px; margin-top: 24px; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 300; color: var(--text); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
   .stat-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    margin-top: 2px;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--text-muted); margin-top: 2px;
   }
+
+  /* Voter name */
+  .voter-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; margin-top: 20px;
+  }
+  .voter-bar label { font-size: 13px; color: var(--text-muted); }
+  .voter-bar input {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 14px; color: var(--text); font-size: 14px; width: 180px;
+    outline: none; transition: border-color 0.15s;
+  }
+  .voter-bar input:focus { border-color: var(--accent); }
+  .voter-bar input::placeholder { color: #555; }
 
   /* Frame card */
   .frame-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    margin-bottom: 32px;
-    overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; margin-bottom: 32px; overflow: hidden;
   }
 
   .frame-card-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 360px;
+    display: grid; grid-template-columns: 1fr 1fr; min-height: 360px;
   }
 
   .frame-image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    background: #fff;
-    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px; background: #fff; position: relative;
   }
 
-  .frame-image img {
-    max-width: 100%;
-    max-height: 280px;
-    object-fit: contain;
-  }
+  .frame-image img { max-width: 100%; max-height: 280px; object-fit: contain; }
 
   .frame-number {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: #999;
-    text-transform: uppercase;
+    position: absolute; top: 16px; left: 16px;
+    font-size: 11px; font-weight: 600; letter-spacing: 2px;
+    color: #999; text-transform: uppercase;
   }
 
   .frame-type {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    display: flex;
-    gap: 6px;
+    position: absolute; bottom: 16px; left: 16px; display: flex; gap: 6px;
   }
 
   .frame-type span {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 100px;
-    background: rgba(0,0,0,0.06);
-    color: #666;
+    font-size: 10px; font-weight: 500; letter-spacing: 1px;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 100px;
+    background: rgba(0,0,0,0.06); color: #666;
   }
 
-  .frame-names {
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-  }
+  .frame-names { padding: 32px; display: flex; flex-direction: column; }
 
   .frame-names h3 {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 20px;
+    font-size: 11px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px;
   }
 
   .names-list {
-    list-style: none;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    list-style: none; flex: 1; display: flex; flex-direction: column; gap: 4px;
   }
 
+  /* Name item with voting */
   .name-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    border-radius: 10px;
-    border: 1px solid transparent;
-    transition: all 0.15s ease;
-    cursor: default;
+    display: flex; align-items: center; padding: 8px 12px;
+    border-radius: 10px; border: 1px solid transparent;
+    transition: all 0.15s ease; gap: 10px;
   }
 
-  .name-item:hover {
-    background: var(--surface-hover);
-    border-color: var(--border);
-  }
+  .name-item:hover { background: var(--surface-hover); border-color: var(--border); }
 
   .name-item .name {
-    font-size: 18px;
-    font-weight: 400;
-    letter-spacing: 0.5px;
+    font-size: 17px; font-weight: 400; letter-spacing: 0.5px;
+    min-width: 90px;
   }
 
   .name-item .note {
-    font-size: 12px;
-    color: var(--text-muted);
-    max-width: 240px;
-    text-align: right;
+    font-size: 11px; color: var(--text-muted); flex: 1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
-  .name-item.favorite {
-    background: var(--green-dim);
-    border-color: rgba(74, 222, 128, 0.2);
+  .vote-buttons { display: flex; gap: 4px; margin-left: auto; flex-shrink: 0; }
+
+  .vote-btn {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; font-size: 14px;
+    transition: all 0.15s ease; position: relative; color: #666;
   }
 
-  .name-item.favorite .name::before {
-    content: '★ ';
-    color: var(--green);
-    font-size: 14px;
+  .vote-btn:hover { border-color: #444; background: var(--surface-hover); }
+
+  .vote-btn.yes:hover, .vote-btn.yes.active { 
+    background: var(--green-dim); border-color: rgba(74, 222, 128, 0.3); color: var(--green);
+  }
+  .vote-btn.no:hover, .vote-btn.no.active { 
+    background: var(--red-dim); border-color: rgba(248, 113, 113, 0.25); color: var(--red);
+  }
+  .vote-btn.maybe:hover, .vote-btn.maybe.active { 
+    background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.25); color: var(--yellow);
   }
 
-  .name-item.rejected {
-    background: var(--red-dim);
-    border-color: rgba(248, 113, 113, 0.15);
-    opacity: 0.5;
+  .vote-btn .count {
+    position: absolute; top: -6px; right: -6px;
+    font-size: 9px; font-weight: 600; min-width: 16px; height: 16px;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    padding: 0 4px; line-height: 1;
   }
 
-  .name-item.rejected .name {
-    text-decoration: line-through;
-  }
+  .vote-btn.yes .count { background: var(--green); color: #000; }
+  .vote-btn.no .count { background: var(--red); color: #fff; }
+  .vote-btn.maybe .count { background: var(--yellow); color: #000; }
 
-  .name-item.maybe {
-    background: var(--yellow-dim);
-    border-color: rgba(251, 191, 36, 0.15);
+  /* Voted states on name item */
+  .name-item[data-my-vote="yes"] {
+    background: var(--green-dim); border-color: rgba(74, 222, 128, 0.15);
   }
-
-  .name-item.maybe .name::before {
-    content: '? ';
-    color: var(--yellow);
-    font-size: 14px;
+  .name-item[data-my-vote="no"] {
+    background: var(--red-dim); border-color: rgba(248, 113, 113, 0.1); opacity: 0.5;
+  }
+  .name-item[data-my-vote="no"] .name { text-decoration: line-through; }
+  .name-item[data-my-vote="maybe"] {
+    background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.1);
   }
 
   /* Tags */
-  .frame-tags {
-    padding: 0 32px 24px;
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
+  .frame-tags { padding: 0 32px 24px; display: flex; gap: 6px; flex-wrap: wrap; }
 
   .tag {
-    font-size: 11px;
-    padding: 4px 12px;
-    border-radius: 100px;
-    background: var(--accent-dim);
-    color: var(--accent);
-    letter-spacing: 0.5px;
+    font-size: 11px; padding: 4px 12px; border-radius: 100px;
+    background: var(--accent-dim); color: var(--accent); letter-spacing: 0.5px;
   }
+
+  /* Export button */
+  .export-bar {
+    display: flex; justify-content: center; gap: 12px; margin-bottom: 40px;
+  }
+
+  .export-btn {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 24px; color: var(--text); font-size: 13px; cursor: pointer;
+    letter-spacing: 0.5px; transition: all 0.15s;
+  }
+  .export-btn:hover { background: var(--surface-hover); border-color: #444; }
+  .export-btn.accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .export-btn.accent:hover { background: rgba(200, 168, 110, 0.2); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #000; padding: 12px 24px; border-radius: 10px;
+    font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s;
+    pointer-events: none; z-index: 100;
+  }
+  .toast.show { opacity: 1; }
 
   /* Responsive */
   @media (max-width: 768px) {
-    .frame-card-inner {
-      grid-template-columns: 1fr;
-    }
-    .frame-image {
-      min-height: 200px;
-    }
+    .frame-card-inner { grid-template-columns: 1fr; }
+    .frame-image { min-height: 200px; }
     header h2 { font-size: 28px; }
-    .stats { gap: 24px; }
+    .stats { gap: 20px; flex-wrap: wrap; }
+    .name-item .note { display: none; }
+    .name-item .name { min-width: 70px; font-size: 15px; }
   }
 
-  /* Footer */
   footer {
-    text-align: center;
-    padding: 40px 0;
-    color: var(--text-muted);
-    font-size: 12px;
-    letter-spacing: 1px;
+    text-align: center; padding: 40px 0; color: var(--text-muted);
+    font-size: 12px; letter-spacing: 1px;
   }
 </style>
 </head>
@@ -280,22 +233,35 @@
   <header>
     <h1>PYE Optics</h1>
     <h2>Titanium Collection — Naming</h2>
-    <p class="subtitle">Рабочий дашборд для выбора названий новых моделей</p>
+    <p class="subtitle">Нажми 👍 👎 или 🤔 чтобы проголосовать. Голоса сохраняются в твоём браузере.</p>
+    <div class="voter-bar">
+      <label>Твоё имя:</label>
+      <input type="text" id="voterName" placeholder="Введи имя..." autocomplete="off">
+    </div>
     <div class="stats">
       <div class="stat">
-        <div class="stat-value" id="totalFrames">9</div>
+        <div class="stat-value">9</div>
         <div class="stat-label">Моделей</div>
       </div>
       <div class="stat">
-        <div class="stat-value" id="totalNames">90</div>
+        <div class="stat-value">90</div>
         <div class="stat-label">Кандидатов</div>
       </div>
       <div class="stat">
-        <div class="stat-value" id="totalApproved">0</div>
-        <div class="stat-label">Утверждено</div>
+        <div class="stat-value green" id="statYes">0</div>
+        <div class="stat-label">👍 Да</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value red" id="statNo">0</div>
+        <div class="stat-label">👎 Нет</div>
       </div>
     </div>
   </header>
+
+  <div class="export-bar">
+    <button class="export-btn accent" onclick="exportResults()">Скопировать результаты</button>
+    <button class="export-btn" onclick="clearVotes()">Сбросить голоса</button>
+  </div>
 
   <!-- FRAME 01 -->
   <div class="frame-card" id="frame-01">
@@ -303,62 +269,107 @@
       <div class="frame-image">
         <span class="frame-number">Frame 01</span>
         <img src="frame-01.png" alt="Frame 01 — Geometric titanium">
-        <div class="frame-type">
-          <span>Оправа</span>
-          <span>С/з очки</span>
-        </div>
+        <div class="frame-type"><span>Оправа</span><span>С/з очки</span></div>
       </div>
       <div class="frame-names">
         <h3>Варианты названий</h3>
         <ul class="names-list">
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Sato">
             <span class="name">Sato</span>
             <span class="note">Японская фамилия, титан = Япония</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Rune">
             <span class="name">Rune</span>
             <span class="note">Древние символы, геометрия, нордика</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Hex">
             <span class="name">Hex</span>
             <span class="note">Hexagon, ультра-короткое, дерзкое</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Crane">
             <span class="name">Crane</span>
             <span class="note">Журавль, тонкие линии, оригами</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Jiro">
             <span class="name">Jiro</span>
             <span class="note">Kurosawa / Jiro Dreams of Sushi</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Knox">
             <span class="name">Knox</span>
             <span class="note">Сильное, X на конце, архитектура</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Alto">
             <span class="name">Alto</span>
             <span class="note">Музыка, высота, итальянский флёр</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Reed">
             <span class="name">Reed</span>
             <span class="note">Тростник — тонкий, минималистичный</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Leith">
             <span class="name">Leith</span>
             <span class="note">Район Эдинбурга, сдержанная элегантность</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
-          <li class="name-item">
+          <li class="name-item" data-frame="01" data-name="Cobb">
             <span class="name">Cobb</span>
             <span class="note">Архитектурное, Inception-вайб</span>
+            <div class="vote-buttons">
+              <button class="vote-btn yes" onclick="vote(this,'yes')" title="Да">👍</button>
+              <button class="vote-btn maybe" onclick="vote(this,'maybe')" title="Может быть">🤔</button>
+              <button class="vote-btn no" onclick="vote(this,'no')" title="Нет">👎</button>
+            </div>
           </li>
         </ul>
       </div>
     </div>
     <div class="frame-tags">
-      <span class="tag">titanium</span>
-      <span class="tag">geometric</span>
-      <span class="tag">minimal</span>
-      <span class="tag">unisex</span>
+      <span class="tag">titanium</span><span class="tag">geometric</span>
+      <span class="tag">minimal</span><span class="tag">unisex</span>
     </div>
   </div>
 
@@ -366,65 +377,27 @@
   <div class="frame-card" id="frame-02">
     <div class="frame-card-inner">
       <div class="frame-image">
-        <span class="frame-number">Frame 02 &middot; ref: SIGMA</span>
+        <span class="frame-number">Frame 02 · ref: SIGMA</span>
         <img src="frame-02.png" alt="Frame 02 — Round titanium">
-        <div class="frame-type">
-          <span>Оправа</span>
-          <span>С/з очки</span>
-        </div>
+        <div class="frame-type"><span>Оправа</span><span>С/з очки</span></div>
       </div>
       <div class="frame-names">
         <h3>Варианты названий</h3>
         <ul class="names-list">
-          <li class="name-item">
-            <span class="name">Ozu</span>
-            <span class="note">Ясудзиро Одзу, икона круглых очков</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Miro</span>
-            <span class="note">Хоан Миро, органичные круглые формы</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Poe</span>
-            <span class="note">Литературный, винтажный, 3 буквы</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Hume</span>
-            <span class="note">Философ, интеллектуальная весомость</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Nori</span>
-            <span class="note">Японское, мягкое, органичное</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Orb</span>
-            <span class="note">Круг, 3 буквы, космическое</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Fern</span>
-            <span class="note">Папоротник — мягкие завитки, природа</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Volta</span>
-            <span class="note">Физик, энергия, итальянское звучание</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Io</span>
-            <span class="note">Спутник Юпитера, 2 буквы, ультра-минимал</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Sage</span>
-            <span class="note">Мудрость, природное, винтажный дух</span>
-          </li>
+          <li class="name-item" data-frame="02" data-name="Ozu"><span class="name">Ozu</span><span class="note">Ясудзиро Одзу, икона круглых очков</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="02" data-name="Miro"><span class="name">Miro</span><span class="note">Хоан Миро, органичные круглые формы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="02" data-name="Poe"><span class="name">Poe</span><span class="note">Литературный, винтажный, 3 буквы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="02" data-name="Hume"><span class="name">Hume</span><span class="note">Философ, интеллектуальная весомость</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="02" data-name="Nori"><span class="name">Nori</span><span class="note">Японское, мягкое, органичное</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="02" data-name="Orb"><span class="name">Orb</span><span class="note">Круг, 3 буквы, космическое</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="02" data-name="Fern"><span class="name">Fern</span><span class="note">Папоротник — мягкие завитки, природа</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="02" data-name="Volta"><span class="name">Volta</span><span class="note">Физик, энергия, итальянское звучание</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="02" data-name="Io"><span class="name">Io</span><span class="note">Спутник Юпитера, 2 буквы, ультра-минимал</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="02" data-name="Sage"><span class="name">Sage</span><span class="note">Мудрость, природное, винтажный дух</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
         </ul>
       </div>
     </div>
-    <div class="frame-tags">
-      <span class="tag">titanium</span>
-      <span class="tag">round</span>
-      <span class="tag">vintage</span>
-      <span class="tag">unisex</span>
-    </div>
+    <div class="frame-tags"><span class="tag">titanium</span><span class="tag">round</span><span class="tag">vintage</span><span class="tag">unisex</span></div>
   </div>
 
   <!-- FRAME 03 -->
@@ -433,64 +406,25 @@
       <div class="frame-image">
         <span class="frame-number">Frame 03</span>
         <img src="frame-03.png" alt="Frame 03 — Semi-rimless gold titanium polygon">
-        <div class="frame-type">
-          <span>Оправа</span>
-          <span>С/з очки</span>
-        </div>
+        <div class="frame-type"><span>Оправа</span><span>С/з очки</span></div>
       </div>
       <div class="frame-names">
         <h3>Варианты названий</h3>
         <ul class="names-list">
-          <li class="name-item">
-            <span class="name">Facet</span>
-            <span class="note">Огранка — как срез камня, геометрия</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Gilt</span>
-            <span class="note">Позолота, 4 буквы, тактильная роскошь</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Rhea</span>
-            <span class="note">Титанида (!) из греческой мифологии</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Kei</span>
-            <span class="note">Японское — «стиль», 3 буквы, изящно</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Mica</span>
-            <span class="note">Минерал с золотистым блеском, 4 буквы</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Lux</span>
-            <span class="note">Свет + роскошь, 3 буквы</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Lyra</span>
-            <span class="note">Созвездие, лира — элегантные линии</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Hana</span>
-            <span class="note">Японское «цветок», нежное, женственное</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Prism</span>
-            <span class="note">Преломление света, грани формы</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Neve</span>
-            <span class="note">Итальянское «снег» — контраст с золотом</span>
-          </li>
+          <li class="name-item" data-frame="03" data-name="Facet"><span class="name">Facet</span><span class="note">Огранка — как срез камня, геометрия</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="03" data-name="Gilt"><span class="name">Gilt</span><span class="note">Позолота, 4 буквы, тактильная роскошь</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="03" data-name="Rhea"><span class="name">Rhea</span><span class="note">Титанида (!) из греческой мифологии</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="03" data-name="Kei"><span class="name">Kei</span><span class="note">Японское — «стиль», 3 буквы, изящно</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="03" data-name="Mica"><span class="name">Mica</span><span class="note">Минерал с золотистым блеском, 4 буквы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="03" data-name="Lux"><span class="name">Lux</span><span class="note">Свет + роскошь, 3 буквы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="03" data-name="Lyra"><span class="name">Lyra</span><span class="note">Созвездие, лира — элегантные линии</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="03" data-name="Hana"><span class="name">Hana</span><span class="note">Японское «цветок», нежное, женственное</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="03" data-name="Prism"><span class="name">Prism</span><span class="note">Преломление света, грани формы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="03" data-name="Neve"><span class="name">Neve</span><span class="note">Итальянское «снег» — контраст с золотом</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
         </ul>
       </div>
     </div>
-    <div class="frame-tags">
-      <span class="tag">titanium</span>
-      <span class="tag">semi-rimless</span>
-      <span class="tag">polygon</span>
-      <span class="tag">gold</span>
-      <span class="tag">fashion</span>
-    </div>
+    <div class="frame-tags"><span class="tag">titanium</span><span class="tag">semi-rimless</span><span class="tag">polygon</span><span class="tag">gold</span><span class="tag">fashion</span></div>
   </div>
 
   <!-- FRAME 04 -->
@@ -499,323 +433,133 @@
       <div class="frame-image">
         <span class="frame-number">Frame 04</span>
         <img src="frame-04.png" alt="Frame 04 — Browline titanium + acetate">
-        <div class="frame-type">
-          <span>Оправа</span>
-          <span>С/з очки</span>
-        </div>
+        <div class="frame-type"><span>Оправа</span><span>С/з очки</span></div>
       </div>
       <div class="frame-names">
         <h3>Варианты названий</h3>
         <ul class="names-list">
-          <li class="name-item">
-            <span class="name">Jarvis</span>
-            <span class="note">Jarvis Cocker — икона browline-очков</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Godard</span>
-            <span class="note">Жан-Люк Годар, французская новая волна</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Monk</span>
-            <span class="note">Thelonious Monk, джаз, интеллект</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Chet</span>
-            <span class="note">Chet Baker — cool jazz, 4 буквы</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Egon</span>
-            <span class="note">Egon Schiele — тёмные линии, экспрессия</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Rothko</span>
-            <span class="note">Mark Rothko — слои цвета, как слои материалов</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Basho</span>
-            <span class="note">Мацуо Басё — японский поэт, глубина</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Saul</span>
-            <span class="note">Saul Leiter / Saul Bass — фото, кино, дизайн</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Noir</span>
-            <span class="note">Film noir — настроение, кинематограф</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Otis</span>
-            <span class="note">Otis Redding — soul, тепло как черепаха</span>
-          </li>
+          <li class="name-item" data-frame="04" data-name="Jarvis"><span class="name">Jarvis</span><span class="note">Jarvis Cocker — икона browline-очков</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="04" data-name="Godard"><span class="name">Godard</span><span class="note">Жан-Люк Годар, французская новая волна</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="04" data-name="Monk"><span class="name">Monk</span><span class="note">Thelonious Monk, джаз, интеллект</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="04" data-name="Chet"><span class="name">Chet</span><span class="note">Chet Baker — cool jazz, 4 буквы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="04" data-name="Egon"><span class="name">Egon</span><span class="note">Egon Schiele — тёмные линии, экспрессия</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="04" data-name="Rothko"><span class="name">Rothko</span><span class="note">Mark Rothko — слои цвета, как слои материалов</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="04" data-name="Basho"><span class="name">Basho</span><span class="note">Мацуо Басё — японский поэт, глубина</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="04" data-name="Saul"><span class="name">Saul</span><span class="note">Saul Leiter / Saul Bass — фото, кино, дизайн</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="04" data-name="Noir"><span class="name">Noir</span><span class="note">Film noir — настроение, кинематограф</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="04" data-name="Otis"><span class="name">Otis</span><span class="note">Otis Redding — soul, тепло</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
         </ul>
       </div>
     </div>
-    <div class="frame-tags">
-      <span class="tag">titanium + acetate</span>
-      <span class="tag">browline</span>
-      <span class="tag">bold</span>
-      <span class="tag">intellectual</span>
-    </div>
+    <div class="frame-tags"><span class="tag">titanium + acetate</span><span class="tag">browline</span><span class="tag">bold</span><span class="tag">intellectual</span></div>
   </div>
 
   <!-- FRAME 05 -->
   <div class="frame-card" id="frame-05">
     <div class="frame-card-inner">
       <div class="frame-image">
-        <span class="frame-number">Frame 05 &middot; ref: 0030</span>
+        <span class="frame-number">Frame 05 · ref: 0030</span>
         <img src="frame-05.png" alt="Frame 05 — Wide rectangular titanium">
-        <div class="frame-type">
-          <span>Оправа</span>
-          <span>С/з очки</span>
-        </div>
+        <div class="frame-type"><span>Оправа</span><span>С/з очки</span></div>
       </div>
       <div class="frame-names">
         <h3>Варианты названий</h3>
         <ul class="names-list">
-          <li class="name-item">
-            <span class="name">Judd</span>
-            <span class="note">Donald Judd — минималист, прямоугольные объёмы</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Ando</span>
-            <span class="note">Tadao Ando — бетон, геометрия, Япония</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Serra</span>
-            <span class="note">Richard Serra — массивная сталь, масштаб</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Mies</span>
-            <span class="note">Mies van der Rohe — «less is more»</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Kahn</span>
-            <span class="note">Louis Kahn — монументальный свет</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Zorn</span>
-            <span class="note">John Zorn (авангард) / Anders Zorn (живопись)</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Siza</span>
-            <span class="note">Álvaro Siza — чистая архитектура, Португалия</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Buren</span>
-            <span class="note">Daniel Buren — концептуальный арт, структура</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Breuer</span>
-            <span class="note">Marcel Breuer — Bauhaus, форма = функция</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Eames</span>
-            <span class="note">Charles & Ray Eames — иконический дизайн</span>
-          </li>
+          <li class="name-item" data-frame="05" data-name="Judd"><span class="name">Judd</span><span class="note">Donald Judd — минималист, прямоугольные объёмы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="05" data-name="Ando"><span class="name">Ando</span><span class="note">Tadao Ando — бетон, геометрия, Япония</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="05" data-name="Serra"><span class="name">Serra</span><span class="note">Richard Serra — массивная сталь, масштаб</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="05" data-name="Mies"><span class="name">Mies</span><span class="note">Mies van der Rohe — «less is more»</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="05" data-name="Kahn"><span class="name">Kahn</span><span class="note">Louis Kahn — монументальный свет</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="05" data-name="Zorn"><span class="name">Zorn</span><span class="note">John Zorn (авангард) / Anders Zorn (живопись)</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="05" data-name="Siza"><span class="name">Siza</span><span class="note">Álvaro Siza — чистая архитектура, Португалия</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="05" data-name="Buren"><span class="name">Buren</span><span class="note">Daniel Buren — концептуальный арт, структура</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="05" data-name="Breuer"><span class="name">Breuer</span><span class="note">Marcel Breuer — Bauhaus, форма = функция</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="05" data-name="Eames"><span class="name">Eames</span><span class="note">Charles & Ray Eames — иконический дизайн</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
         </ul>
       </div>
     </div>
-    <div class="frame-tags">
-      <span class="tag">titanium</span>
-      <span class="tag">wide rectangular</span>
-      <span class="tag">architectural</span>
-      <span class="tag">bold</span>
-    </div>
+    <div class="frame-tags"><span class="tag">titanium</span><span class="tag">wide rectangular</span><span class="tag">architectural</span><span class="tag">bold</span></div>
   </div>
 
   <!-- FRAME 06 -->
   <div class="frame-card" id="frame-06">
     <div class="frame-card-inner">
       <div class="frame-image">
-        <span class="frame-number">Frame 06 &middot; ref: T0033A</span>
+        <span class="frame-number">Frame 06 · ref: T0033A</span>
         <img src="frame-06.png" alt="Frame 06 — Soft geometric titanium">
-        <div class="frame-type">
-          <span>Оправа</span>
-          <span>С/з очки</span>
-        </div>
+        <div class="frame-type"><span>Оправа</span><span>С/з очки</span></div>
       </div>
       <div class="frame-names">
         <h3>Варианты названий</h3>
         <ul class="names-list">
-          <li class="name-item">
-            <span class="name">Wabi</span>
-            <span class="note">Wabi-sabi — красота простоты 🇯🇵</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Satie</span>
-            <span class="note">Erik Satie — Gymnopédies, нежный минимализм 🎵</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Flint</span>
-            <span class="note">Кремень — природный, тёмный, точный 🪨</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Cove</span>
-            <span class="note">Тихая бухта — мягкие контуры берега 🌊</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Ghent</span>
-            <span class="note">Гент, Бельгия — тихая европейская элегантность 🗺</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Dusk</span>
-            <span class="note">Сумерки — мягкая грань между днём и ночью 🌆</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Eave</span>
-            <span class="note">Карниз — мягкая архитектурная линия 🏛</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Rohmer</span>
-            <span class="note">Éric Rohmer — тихое французское кино 🎬</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Felt</span>
-            <span class="note">Фетр — тактильность, мягкость, тепло 🧶</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Flux</span>
-            <span class="note">Поток, переход — форма между кругом и квадратом ⚡</span>
-          </li>
+          <li class="name-item" data-frame="06" data-name="Wabi"><span class="name">Wabi</span><span class="note">Wabi-sabi — красота простоты</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="06" data-name="Satie"><span class="name">Satie</span><span class="note">Erik Satie — Gymnopédies, нежный минимализм</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="06" data-name="Flint"><span class="name">Flint</span><span class="note">Кремень — природный, тёмный, точный</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="06" data-name="Cove"><span class="name">Cove</span><span class="note">Тихая бухта — мягкие контуры берега</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="06" data-name="Ghent"><span class="name">Ghent</span><span class="note">Гент, Бельгия — тихая европейская элегантность</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="06" data-name="Dusk"><span class="name">Dusk</span><span class="note">Сумерки — мягкая грань между днём и ночью</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="06" data-name="Eave"><span class="name">Eave</span><span class="note">Карниз — мягкая архитектурная линия</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="06" data-name="Rohmer"><span class="name">Rohmer</span><span class="note">Éric Rohmer — тихое французское кино</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="06" data-name="Felt"><span class="name">Felt</span><span class="note">Фетр — тактильность, мягкость, тепло</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="06" data-name="Flux"><span class="name">Flux</span><span class="note">Поток, переход — форма между кругом и квадратом</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
         </ul>
       </div>
     </div>
-    <div class="frame-tags">
-      <span class="tag">titanium</span>
-      <span class="tag">soft geometric</span>
-      <span class="tag">balanced</span>
-      <span class="tag">everyday</span>
-    </div>
+    <div class="frame-tags"><span class="tag">titanium</span><span class="tag">soft geometric</span><span class="tag">balanced</span><span class="tag">everyday</span></div>
   </div>
 
   <!-- FRAME 07 -->
   <div class="frame-card" id="frame-07">
     <div class="frame-card-inner">
       <div class="frame-image">
-        <span class="frame-number">Frame 07 &middot; ref: 38</span>
+        <span class="frame-number">Frame 07 · ref: 38</span>
         <img src="frame-07.png" alt="Frame 07 — Oval acetate + titanium layered">
-        <div class="frame-type">
-          <span>Оправа</span>
-          <span>С/з очки</span>
-        </div>
+        <div class="frame-type"><span>Оправа</span><span>С/з очки</span></div>
       </div>
       <div class="frame-names">
         <h3>Варианты названий</h3>
         <ul class="names-list">
-          <li class="name-item">
-            <span class="name">Merz</span>
-            <span class="note">Kurt Schwitters — mixed media, коллаж 🎨</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Fugue</span>
-            <span class="note">Переплетение голосов = переплетение материалов 🎵</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Onyx</span>
-            <span class="note">Слоистый тёмный камень, глубина 🪨</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Kasane</span>
-            <span class="note">Японское «наслоение» — техника кимоно 🇯🇵</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Tati</span>
-            <span class="note">Jacques Tati — игривая французская классика 🎬</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Echo</span>
-            <span class="note">Повторение формы, отражение, слои звука 🔊</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Patina</span>
-            <span class="note">Благородный след времени на поверхности ⏳</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Raku</span>
-            <span class="note">Японская керамика — непредсказуемые слои глазури 🍵</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Agate</span>
-            <span class="note">Агат — полосатый минерал, слой за слоем 💎</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Murano</span>
-            <span class="note">Муранское стекло — слои цвета внутри формы 🇮🇹</span>
-          </li>
+          <li class="name-item" data-frame="07" data-name="Merz"><span class="name">Merz</span><span class="note">Kurt Schwitters — mixed media, коллаж</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="07" data-name="Fugue"><span class="name">Fugue</span><span class="note">Переплетение голосов = переплетение материалов</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="07" data-name="Onyx"><span class="name">Onyx</span><span class="note">Слоистый тёмный камень, глубина</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="07" data-name="Kasane"><span class="name">Kasane</span><span class="note">Японское «наслоение» — техника кимоно</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="07" data-name="Tati"><span class="name">Tati</span><span class="note">Jacques Tati — игривая французская классика</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="07" data-name="Echo"><span class="name">Echo</span><span class="note">Повторение формы, отражение, слои звука</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="07" data-name="Patina"><span class="name">Patina</span><span class="note">Благородный след времени на поверхности</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="07" data-name="Raku"><span class="name">Raku</span><span class="note">Японская керамика — непредсказуемые слои глазури</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="07" data-name="Agate"><span class="name">Agate</span><span class="note">Агат — полосатый минерал, слой за слоем</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="07" data-name="Murano"><span class="name">Murano</span><span class="note">Муранское стекло — слои цвета внутри формы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
         </ul>
       </div>
     </div>
-    <div class="frame-tags">
-      <span class="tag">titanium + acetate</span>
-      <span class="tag">oval</span>
-      <span class="tag">layered</span>
-      <span class="tag">retro</span>
-    </div>
+    <div class="frame-tags"><span class="tag">titanium + acetate</span><span class="tag">oval</span><span class="tag">layered</span><span class="tag">retro</span></div>
   </div>
 
   <!-- FRAME 08 -->
   <div class="frame-card" id="frame-08">
     <div class="frame-card-inner">
       <div class="frame-image">
-        <span class="frame-number">Frame 08 &middot; ref: 065</span>
+        <span class="frame-number">Frame 08 · ref: 065</span>
         <img src="frame-08.png" alt="Frame 08 — Navigator titanium">
-        <div class="frame-type">
-          <span>Оправа</span>
-          <span>С/з очки</span>
-        </div>
+        <div class="frame-type"><span>Оправа</span><span>С/з очки</span></div>
       </div>
       <div class="frame-names">
         <h3>Варианты названий</h3>
         <ul class="names-list">
-          <li class="name-item">
-            <span class="name">Helm</span>
-            <span class="note">Штурвал — управление курсом, 4 буквы ⚓</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Mesa</span>
-            <span class="note">Плоское плато — квадрат в ландшафте 🏜</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Nansen</span>
-            <span class="note">Фритьоф Нансен — полярник, нобелиат 🧊</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Tetsu</span>
-            <span class="note">Японское «железо» — сила титана 🇯🇵</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Melville</span>
-            <span class="note">Жан-Пьер Мельвиль — Le Samouraï, холодный стиль 🎬</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Kite</span>
-            <span class="note">Коршун + воздушный змей — двойной смысл, полёт 🪁</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Fjord</span>
-            <span class="note">Фьорд — резные линии, нордическая мощь 🏔</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Stern</span>
-            <span class="note">Строгий + корма корабля — двойное дно 🚢</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Trane</span>
-            <span class="note">Coltrane (джаз) + «журавль» по-шведски 🎷</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Ridge</span>
-            <span class="note">Хребет — горизонтальная линия двойного моста ⛰</span>
-          </li>
+          <li class="name-item" data-frame="08" data-name="Helm"><span class="name">Helm</span><span class="note">Штурвал — управление курсом, 4 буквы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="08" data-name="Mesa"><span class="name">Mesa</span><span class="note">Плоское плато — квадрат в ландшафте</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="08" data-name="Nansen"><span class="name">Nansen</span><span class="note">Фритьоф Нансен — полярник, нобелиат</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="08" data-name="Tetsu"><span class="name">Tetsu</span><span class="note">Японское «железо» — сила титана</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="08" data-name="Melville"><span class="name">Melville</span><span class="note">Жан-Пьер Мельвиль — Le Samouraï, холодный стиль</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="08" data-name="Kite"><span class="name">Kite</span><span class="note">Коршун + воздушный змей — двойной смысл</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="08" data-name="Fjord"><span class="name">Fjord</span><span class="note">Фьорд — резные линии, нордическая мощь</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="08" data-name="Stern"><span class="name">Stern</span><span class="note">Строгий + корма корабля — двойное дно</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="08" data-name="Trane"><span class="name">Trane</span><span class="note">Coltrane (джаз) + «журавль» по-шведски</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="08" data-name="Ridge"><span class="name">Ridge</span><span class="note">Хребет — горизонтальная линия двойного моста</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
         </ul>
       </div>
     </div>
-    <div class="frame-tags">
-      <span class="tag">titanium</span>
-      <span class="tag">navigator</span>
-      <span class="tag">double bridge</span>
-      <span class="tag">confident</span>
-    </div>
+    <div class="frame-tags"><span class="tag">titanium</span><span class="tag">navigator</span><span class="tag">double bridge</span><span class="tag">confident</span></div>
   </div>
 
   <!-- FRAME 09 -->
@@ -824,73 +568,173 @@
       <div class="frame-image">
         <span class="frame-number">Frame 09</span>
         <img src="frame-09.png" alt="Frame 09 — Gold butterfly titanium">
-        <div class="frame-type">
-          <span>Оправа</span>
-          <span>С/з очки</span>
-        </div>
+        <div class="frame-type"><span>Оправа</span><span>С/з очки</span></div>
       </div>
       <div class="frame-names">
         <h3>Варианты названий</h3>
         <ul class="names-list">
-          <li class="name-item">
-            <span class="name">Klimt</span>
-            <span class="note">Gustav Klimt — золото и есть его искусство 🎨</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Sade</span>
-            <span class="note">Sade Adu — smooth, золотой голос, 4 буквы 🎵</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Varda</span>
-            <span class="note">Agnès Varda — тёплое французское кино 🎬</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Siena</span>
-            <span class="note">Золотистый город в Тоскане 🇮🇹</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Kiku</span>
-            <span class="note">Хризантема — золотой императорский цветок Японии 🌸</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Mucha</span>
-            <span class="note">Альфонс Муха — Art Nouveau, женственные линии 🖼</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Amber</span>
-            <span class="note">Янтарь — застывший тёплый свет 💛</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Astrud</span>
-            <span class="note">Astrud Gilberto — bossa nova, золотой тембр 🎶</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Nectar</span>
-            <span class="note">Золотистый, сладкий, природный 🍯</span>
-          </li>
-          <li class="name-item">
-            <span class="name">Soleil</span>
-            <span class="note">Французское «солнце» — источник золотого света ☀️</span>
-          </li>
+          <li class="name-item" data-frame="09" data-name="Klimt"><span class="name">Klimt</span><span class="note">Gustav Klimt — золото и есть его искусство</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="09" data-name="Sade"><span class="name">Sade</span><span class="note">Sade Adu — smooth, золотой голос, 4 буквы</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="09" data-name="Varda"><span class="name">Varda</span><span class="note">Agnès Varda — тёплое французское кино</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="09" data-name="Siena"><span class="name">Siena</span><span class="note">Золотистый город в Тоскане</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="09" data-name="Kiku"><span class="name">Kiku</span><span class="note">Хризантема — золотой императорский цветок Японии</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="09" data-name="Mucha"><span class="name">Mucha</span><span class="note">Альфонс Муха — Art Nouveau, женственные линии</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="09" data-name="Amber"><span class="name">Amber</span><span class="note">Янтарь — застывший тёплый свет</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="09" data-name="Astrud"><span class="name">Astrud</span><span class="note">Astrud Gilberto — bossa nova, золотой тембр</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="09" data-name="Nectar"><span class="name">Nectar</span><span class="note">Золотистый, сладкий, природный</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
+          <li class="name-item" data-frame="09" data-name="Soleil"><span class="name">Soleil</span><span class="note">Французское «солнце» — источник золотого света</span><div class="vote-buttons"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></li>
         </ul>
       </div>
     </div>
-    <div class="frame-tags">
-      <span class="tag">titanium</span>
-      <span class="tag">butterfly</span>
-      <span class="tag">gold</span>
-      <span class="tag">feminine</span>
-      <span class="tag">gradient</span>
-    </div>
+    <div class="frame-tags"><span class="tag">titanium</span><span class="tag">butterfly</span><span class="tag">gold</span><span class="tag">feminine</span><span class="tag">gradient</span></div>
   </div>
 
   <!-- NEW FRAMES WILL BE ADDED HERE -->
 
-  <footer>
-    PYE OPTICS NAMING DASHBOARD &middot; FEBRUARY 2026
-  </footer>
+  <footer>PYE OPTICS NAMING DASHBOARD &middot; FEBRUARY 2026</footer>
 
 </div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'pye-naming-votes';
+
+function getVotes() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch { return {}; }
+}
+
+function saveVotes(votes) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
+}
+
+function getVoterName() {
+  return document.getElementById('voterName').value.trim() || 'Anonymous';
+}
+
+function vote(btn, type) {
+  const item = btn.closest('.name-item');
+  const key = item.dataset.frame + '::' + item.dataset.name;
+  const votes = getVotes();
+  const voter = getVoterName();
+
+  if (!votes[key]) votes[key] = {};
+
+  if (votes[key][voter] === type) {
+    delete votes[key][voter];
+    item.removeAttribute('data-my-vote');
+  } else {
+    votes[key][voter] = type;
+    item.setAttribute('data-my-vote', type);
+  }
+
+  saveVotes(votes);
+  renderVotes();
+}
+
+function renderVotes() {
+  const votes = getVotes();
+  const voter = getVoterName();
+  let totalYes = 0, totalNo = 0;
+
+  document.querySelectorAll('.name-item').forEach(item => {
+    const key = item.dataset.frame + '::' + item.dataset.name;
+    const nameVotes = votes[key] || {};
+    const myVote = nameVotes[voter];
+
+    if (myVote) {
+      item.setAttribute('data-my-vote', myVote);
+    } else {
+      item.removeAttribute('data-my-vote');
+    }
+
+    const counts = { yes: 0, maybe: 0, no: 0 };
+    Object.values(nameVotes).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
+
+    item.querySelectorAll('.vote-btn').forEach(btn => {
+      const t = btn.classList.contains('yes') ? 'yes' : btn.classList.contains('no') ? 'no' : 'maybe';
+      btn.classList.toggle('active', myVote === t);
+      const existing = btn.querySelector('.count');
+      if (existing) existing.remove();
+      if (counts[t] > 0) {
+        const badge = document.createElement('span');
+        badge.className = 'count';
+        badge.textContent = counts[t];
+        btn.appendChild(badge);
+      }
+    });
+
+    if (myVote === 'yes') totalYes++;
+    if (myVote === 'no') totalNo++;
+  });
+
+  document.getElementById('statYes').textContent = totalYes;
+  document.getElementById('statNo').textContent = totalNo;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function exportResults() {
+  const votes = getVotes();
+  const lines = ['PYE Titanium Naming — Результаты голосования\n'];
+  let currentFrame = '';
+
+  document.querySelectorAll('.name-item').forEach(item => {
+    const frame = 'Frame ' + item.dataset.frame;
+    if (frame !== currentFrame) {
+      currentFrame = frame;
+      lines.push('\n' + frame + ':');
+    }
+    const key = item.dataset.frame + '::' + item.dataset.name;
+    const nameVotes = votes[key] || {};
+    const yes = [], no = [], maybe = [];
+    Object.entries(nameVotes).forEach(([voter, v]) => {
+      if (v === 'yes') yes.push(voter);
+      if (v === 'no') no.push(voter);
+      if (v === 'maybe') maybe.push(voter);
+    });
+
+    let status = '  ' + item.dataset.name;
+    const parts = [];
+    if (yes.length) parts.push('👍 ' + yes.join(', '));
+    if (maybe.length) parts.push('🤔 ' + maybe.join(', '));
+    if (no.length) parts.push('👎 ' + no.join(', '));
+    if (parts.length) status += ' — ' + parts.join(' | ');
+    lines.push(status);
+  });
+
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    showToast('Результаты скопированы в буфер обмена!');
+  });
+}
+
+function clearVotes() {
+  if (confirm('Сбросить все твои голоса?')) {
+    const votes = getVotes();
+    const voter = getVoterName();
+    Object.keys(votes).forEach(key => { delete votes[key][voter]; });
+    saveVotes(votes);
+    renderVotes();
+    showToast('Голоса сброшены');
+  }
+}
+
+// Voter name persistence
+const savedName = localStorage.getItem('pye-naming-voter');
+if (savedName) document.getElementById('voterName').value = savedName;
+document.getElementById('voterName').addEventListener('input', function() {
+  localStorage.setItem('pye-naming-voter', this.value);
+  renderVotes();
+});
+
+renderVotes();
+</script>
 
 </body>
 </html>
