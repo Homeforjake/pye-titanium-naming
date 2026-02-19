@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYE Titanium — Wave 4c Naming</title>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --surface-hover: #222;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --accent: #e879f9;
+    --accent-dim: rgba(232, 121, 249, 0.12);
+    --green: #4ade80;
+    --green-dim: rgba(74, 222, 128, 0.12);
+    --red: #f87171;
+    --red-dim: rgba(248, 113, 113, 0.10);
+    --yellow: #fbbf24;
+    --yellow-dim: rgba(251, 191, 36, 0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif; line-height: 1.6; padding: 40px 20px; min-height: 100vh; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 60px; }
+  header h1 { font-size: 13px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  header h2 { font-size: 36px; font-weight: 300; letter-spacing: -0.5px; }
+  header .subtitle { font-size: 14px; color: var(--text-muted); margin-top: 8px; max-width: 640px; margin-left: auto; margin-right: auto; }
+  .voter-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; }
+  .voter-bar label { font-size: 13px; color: var(--text-muted); }
+  .voter-bar input { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; color: var(--text); font-size: 14px; width: 180px; outline: none; }
+  .voter-bar input:focus { border-color: var(--accent); }
+  .stats { display: flex; justify-content: center; gap: 40px; margin-top: 24px; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 300; }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-top: 2px; }
+  .export-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; }
+  .export-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 24px; color: var(--text); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .export-btn:hover { background: var(--surface-hover); border-color: #444; }
+  .export-btn.accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .culture-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+  .culture-nav a { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; transition: all 0.15s; }
+  .culture-nav a:hover { border-color: #444; color: var(--text); }
+  .culture-nav a.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .frame-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 40px; overflow: hidden; }
+  .frame-header { display: flex; align-items: stretch; min-height: 280px; }
+  .frame-image { width: 360px; min-width: 360px; display: flex; align-items: center; justify-content: center; padding: 28px; background: #fff; position: relative; }
+  .frame-image img { max-width: 100%; max-height: 220px; object-fit: contain; }
+  .frame-number { position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #999; text-transform: uppercase; }
+  .frame-info { flex: 1; padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+  .frame-info h3 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .frame-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .tag { font-size: 11px; padding: 4px 12px; border-radius: 100px; background: var(--accent-dim); color: var(--accent); letter-spacing: 0.5px; }
+  .domain-tag { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; }
+  .domain-tag.medieval { background: rgba(248, 113, 113, 0.12); color: #f87171; }
+  .domain-tag.philo { background: rgba(167, 139, 250, 0.12); color: #a78bfa; }
+  .domain-tag.utopia { background: rgba(251, 191, 36, 0.12); color: #fbbf24; }
+  .domain-tag.games { background: rgba(45, 212, 191, 0.12); color: #2dd4bf; }
+  .domain-tag.botany { background: rgba(74, 222, 128, 0.12); color: #4ade80; }
+  .names-section { padding: 0 28px 28px; }
+  .names-section h4 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .names-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .name-card { padding: 18px; border-radius: 12px; border: 1px solid var(--border); transition: all 0.15s; }
+  .name-card:hover { border-color: #444; background: var(--surface-hover); }
+  .name-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .name-card .name { font-size: 22px; font-weight: 400; letter-spacing: 0.5px; }
+  .name-card .backstory { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .name-card .backstory strong { color: var(--text); font-weight: 500; }
+  .name-card .vote-row { display: flex; gap: 4px; margin-top: 10px; }
+  .vote-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.15s; position: relative; color: #666; }
+  .vote-btn:hover { border-color: #444; background: var(--surface-hover); }
+  .vote-btn.yes:hover, .vote-btn.yes.active { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.3); color: var(--green); }
+  .vote-btn.no:hover, .vote-btn.no.active { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.25); color: var(--red); }
+  .vote-btn.maybe:hover, .vote-btn.maybe.active { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.25); color: var(--yellow); }
+  .vote-btn .count { position: absolute; top: -6px; right: -6px; font-size: 9px; font-weight: 600; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; line-height: 1; }
+  .vote-btn.yes .count { background: var(--green); color: #000; }
+  .vote-btn.no .count { background: var(--red); color: #fff; }
+  .vote-btn.maybe .count { background: var(--yellow); color: #000; }
+  .name-card[data-my-vote="yes"] { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.15); }
+  .name-card[data-my-vote="no"] { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.1); opacity: 0.45; }
+  .name-card[data-my-vote="no"] .name { text-decoration: line-through; }
+  .name-card[data-my-vote="maybe"] { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.1); }
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 12px 24px; border-radius: 10px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
+  .toast.show { opacity: 1; }
+  footer { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 12px; letter-spacing: 1px; }
+  @media (max-width: 900px) { .frame-header { flex-direction: column; } .frame-image { width: 100%; min-width: 0; min-height: 200px; } header h2 { font-size: 28px; } .stats { gap: 20px; flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav class="culture-nav">
+  <a href="index.html">Основной (Wave 3)</a>
+  <a href="anime.html">Аниме</a>
+  <a href="cinema.html">Кино</a>
+  <a href="books.html">Литература</a>
+  <a href="wave4.html">Wave 4a</a>
+  <a href="wave4b.html">Wave 4b</a>
+  <a href="wave4c.html" class="active">Wave 4c</a>
+</nav>
+
+<header>
+  <h1>PYE Optics</h1>
+  <h2>Titanium Collection — Wave 4c</h2>
+  <p class="subtitle">54 названия из 5 доменов: <strong style="color:#f87171">средневековье</strong>, <strong style="color:#a78bfa">философия</strong>, <strong style="color:#fbbf24">утопии</strong>, <strong style="color:#2dd4bf">игры</strong>, <strong style="color:#4ade80">ботаника</strong>.</p>
+  <div class="voter-bar"><label>Твоё имя:</label><input type="text" id="voterName" placeholder="Введи имя..." autocomplete="off"></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-value">9</div><div class="stat-label">Моделей</div></div>
+    <div class="stat"><div class="stat-value">54</div><div class="stat-label">Названий</div></div>
+    <div class="stat"><div class="stat-value green" id="statYes">0</div><div class="stat-label">👍 Да</div></div>
+    <div class="stat"><div class="stat-value red" id="statNo">0</div><div class="stat-label">👎 Нет</div></div>
+  </div>
+</header>
+
+<div class="export-bar">
+  <button class="export-btn accent" onclick="exportResults()">Скопировать результаты</button>
+  <button class="export-btn" onclick="clearVotes()">Сбросить голоса</button>
+</div>
+
+<!-- FRAME 01 -->
+<div class="frame-card"><div class="frame-header"><div class="frame-image"><span class="frame-number">Frame 01</span><img src="frame-01.png" alt="Frame 01"></div><div class="frame-info"><h3>Geometric Titanium</h3><p style="color:var(--text-muted); font-size:14px;">Угловатая геометрия, точные линии.</p><div class="frame-tags"><span class="tag">angular</span><span class="tag">precise</span><span class="tag">minimal</span></div></div></div>
+<div class="names-section"><h4>Wave 4c</h4><div class="names-grid">
+  <div class="name-card" data-frame="01" data-name="Parry"><div class="name-card-top"><span class="name">Parry</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Parry</strong> — отбив мечом: угловатый защитный манёвр, где точный угол = жизнь или смерть. Фехтование — геометрия клинков. Quarte, sixte, octave — каждый парир = точная линия. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="01" data-name="Logos"><div class="name-card-top"><span class="name">Logos</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Λόγος</strong> — разум, порядок, структура вселенной. Гераклит: logos = закон, по которому всё организовано. Геометрия мысли. Также: слово, речь — структура коммуникации. 5 букв, греческое.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="01" data-name="Zion"><div class="name-card-top"><span class="name">Zion</span><span class="domain-tag utopia">утопия</span></div><div class="backstory"><strong>Zion</strong> — последний город людей в Matrix: угловатый, металлический, глубоко под землёй. Также: библейский Сион, растафарианская земля обетованная. Z на старте — электрический удар. 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="01" data-name="Rook"><div class="name-card-top"><span class="name">Rook</span><span class="domain-tag games">игры</span></div><div class="backstory"><strong>Rook</strong> — ладья: ходит строго по прямым линиям, горизонталь и вертикаль. Самая архитектурная фигура — башня замка. Рокировка: единственный ход, где двигаются две фигуры. 4 буквы, тяжёлое OO.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="01" data-name="Xylem"><div class="name-card-top"><span class="name">Xylem</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Xylem</strong> — проводящая ткань растений: транспорт воды по прямым трубкам от корней к листьям. Греческое ξύλον = дерево. Звучит как sci-fi, работает как инженерия. X на старте — визуальный крест. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="01" data-name="Herald"><div class="name-card-top"><span class="name">Herald</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Herald</strong> — герольд: знаток гербов и геральдики. Человек, читающий геометрию символов: chevrons, bends, pales — каждая линия на гербе = семья, статус, история. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+</div></div></div>
+
+<!-- FRAME 02 -->
+<div class="frame-card"><div class="frame-header"><div class="frame-image"><span class="frame-number">Frame 02</span><img src="frame-02.png" alt="Frame 02"></div><div class="frame-info"><h3>Round Titanium</h3><p style="color:var(--text-muted); font-size:14px;">Классический круг, полнота, винтаж.</p><div class="frame-tags"><span class="tag">round</span><span class="tag">warm</span><span class="tag">vintage</span></div></div></div>
+<div class="names-section"><h4>Wave 4c</h4><div class="names-grid">
+  <div class="name-card" data-frame="02" data-name="Squire"><div class="name-card-top"><span class="name">Squire</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Squire</strong> — оруженосец: молодой человек в круге обучения, готовящийся стать рыцарем. Тёплый, верный, растущий. Круг ученичества — от пажа к оруженосцу и рыцарю. 6 букв, SQU = мягкое начало.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="02" data-name="Gestalt"><div class="name-card-top"><span class="name">Gestalt</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Gestalt</strong> — целое больше суммы частей. Гештальт-психология: мы видим круг даже из разрозненных точек. Полнота восприятия, завершённость формы. «Закрыть гештальт» = завершить круг. 7 букв, немецкое.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="02" data-name="Arcadia"><div class="name-card-top"><span class="name">Arcadia</span><span class="domain-tag utopia">утопия</span></div><div class="backstory"><strong>Arcadia</strong> — идиллическая пастораль: круглые холмы, пастухи, мирная жизнь. <em>Et in Arcadia ego</em> — Пуссен, Гверчино. Рай, в котором даже смерть — часть гармонии. Том Стоппард написал пьесу. 7 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="02" data-name="Pawn"><div class="name-card-top"><span class="name">Pawn</span><span class="domain-tag games">игры</span></div><div class="backstory"><strong>Pawn</strong> — пешка: самая маленькая, самая круглая фигура на доске. Но дойдя до конца — становится ферзём. Скромная полнота потенциала. 4 буквы, один тяжёлый слог.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="02" data-name="Spore"><div class="name-card-top"><span class="name">Spore</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Spore</strong> — спора: круглая, микроскопическая, содержащая целый организм. Путешествует ветром, выживает веками. Полнота будущего в идеальной сфере. Также: игра Уилла Райта. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="02" data-name="Bonsai"><div class="name-card-top"><span class="name">Bonsai</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>盆栽</strong> — миниатюрное дерево: полный мир в круглой кроне. Столетия формирования. Японское искусство, требующее поколений. Круглая оправа = бонсай: завершённая вселенная в малом. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+</div></div></div>
+
+<!-- FRAME 03 -->
+<div class="frame-card"><div class="frame-header"><div class="frame-image"><span class="frame-number">Frame 03</span><img src="frame-03.png" alt="Frame 03"></div><div class="frame-info"><h3>Semi-Rimless Gold Polygon</h3><p style="color:var(--text-muted); font-size:14px;">Золотой полигон, ювелирный, эфемерный.</p><div class="frame-tags"><span class="tag">gold</span><span class="tag">polygon</span><span class="tag">ethereal</span></div></div></div>
+<div class="names-section"><h4>Wave 4c</h4><div class="names-grid">
+  <div class="name-card" data-frame="03" data-name="Vigil"><div class="name-card-top"><span class="name">Vigil</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Vigil</strong> — ночное бдение рыцаря перед посвящением: один, в часовне, среди золотых свечей. Тишина + свет + ожидание. Полуободковая оправа мерцает, как свечи vigil. 5 букв, латинское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="03" data-name="Kairos"><div class="name-card-top"><span class="name">Kairos</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Καιρός</strong> — правильный момент. Не хронос (длительность), а kairos — точка, когда нужно действовать. Золотой миг, который нельзя упустить. Греки изображали его юношей с крыльями на ступнях. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="03" data-name="Xanadu"><div class="name-card-top"><span class="name">Xanadu</span><span class="domain-tag utopia">утопия</span></div><div class="backstory"><strong>Xanadu</strong> — дворец Кублай-хана из поэмы Coleridge: «In Xanadu did Kubla Khan / A stately pleasure-dome decree.» Также: поместье Кейна в Citizen Kane. Золотой чертог. X на старте. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="03" data-name="Joker"><div class="name-card-top"><span class="name">Joker</span><span class="domain-tag games">игры</span></div><div class="backstory"><strong>Joker</strong> — карта вне масти: золотой wild card, может стать чем угодно. Не привязан к правилам. Jester в золотом колпаке. Полигональная оправа = joker: не вписывается в систему, но ценнее всех. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="03" data-name="Lichen"><div class="name-card-top"><span class="name">Lichen</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Lichen</strong> — лишайник: золотистый организм, растущий на камнях веками. Симбиоз гриба и водоросли — два в одном. Первый колонизатор голых скал. Золотой lichen на скалах Шотландии. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="03" data-name="Ethos"><div class="name-card-top"><span class="name">Ethos</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Ἦθος</strong> — характер, дух, нравственный облик. Аристотель: ethos оратора убеждает через доверие. Золотой стандарт убеждений — не что говоришь, а кто ты. 5 букв, греческое.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+</div></div></div>
+
+<!-- FRAME 04 -->
+<div class="frame-card"><div class="frame-header"><div class="frame-image"><span class="frame-number">Frame 04</span><img src="frame-04.png" alt="Frame 04"></div><div class="frame-info"><h3>Browline — Titanium + Acetate</h3><p style="color:var(--text-muted); font-size:14px;">Интеллект + дерзость, два материала.</p><div class="frame-tags"><span class="tag">intellectual</span><span class="tag">bold</span><span class="tag">dual nature</span></div></div></div>
+<div class="names-section"><h4>Wave 4c</h4><div class="names-grid">
+  <div class="name-card" data-frame="04" data-name="Liege"><div class="name-card-top"><span class="name">Liege</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Liege</strong> — сюзерен: тот, кому присягают на верность. Интеллектуальная власть через авторитет, не силу. Тяжёлая бровь ацетата = корона liege. Также: город в Бельгии (Льеж). 5 букв, французское звучание.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="04" data-name="Pragma"><div class="name-card-top"><span class="name">Pragma</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Πρᾶγμα</strong> — практическая мудрость. Прагматизм: Пирс, Джеймс, Дьюи — философия, которая работает. Browline: не только красиво, но и функционально. 6 букв, греческое, PR = энергия действия.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="04" data-name="Lemuria"><div class="name-card-top"><span class="name">Lemuria</span><span class="domain-tag utopia">утопия</span></div><div class="backstory"><strong>Lemuria</strong> — гипотетический затонувший континент в Индийском океане. Названа в честь лемуров. Скрытое знание под поверхностью — как титан под ацетатом. Два слоя: видимый мир и утопленный. 7 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="04" data-name="Bishop"><div class="name-card-top"><span class="name">Bishop</span><span class="domain-tag games">игры</span></div><div class="backstory"><strong>Bishop</strong> — слон в шахматах: ходит по диагонали, срезает углы. Интеллектуальная фигура, действующая непрямолинейно. По-английски «bishop» = епископ — религиозный интеллектуал. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="04" data-name="Kudzu"><div class="name-card-top"><span class="name">Kudzu</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Kudzu (葛)</strong> — японская лиана, захватывающая всё на своём пути. Привезена в Америку как декорация — поглотила юг США. Дерзкая экспансия: растёт 30 см в день. 5 букв, японское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="04" data-name="Metis"><div class="name-card-top"><span class="name">Metis</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Μῆτις</strong> — хитрость Одиссея: практический ум, способность найти выход из любой ситуации. Не sophia (мудрость), а metis — cunning intelligence. Browline-ум: не теория, а план. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+</div></div></div>
+
+<!-- FRAME 05 -->
+<div class="frame-card"><div class="frame-header"><div class="frame-image"><span class="frame-number">Frame 05</span><img src="frame-05.png" alt="Frame 05"></div><div class="frame-info"><h3>Wide Rectangular Titanium</h3><p style="color:var(--text-muted); font-size:14px;">Широкий, архитектурный, масштабный.</p><div class="frame-tags"><span class="tag">wide</span><span class="tag">massive</span><span class="tag">architectural</span></div></div></div>
+<div class="names-section"><h4>Wave 4c</h4><div class="names-grid">
+  <div class="name-card" data-frame="05" data-name="Vassal"><div class="name-card-top"><span class="name">Vassal</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Vassal</strong> — вассал: получает землю в обмен на верность. Масштаб феодальной пирамиды — каждый вассал = другой масштаб владений. Ответственность шире собственных границ. 6 букв, латинские корни.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="05" data-name="Pathos"><div class="name-card-top"><span class="name">Pathos</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Πάθος</strong> — страдание, масштаб эмоции. Аристотель: через pathos зритель переживает катарсис. Масштаб трагедии, который очищает. Также: пафос — грандиозность (ирония в комплекте). 6 букв, греческое.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="05" data-name="Avalon"><div class="name-card-top"><span class="name">Avalon</span><span class="domain-tag utopia">утопия</span></div><div class="backstory"><strong>Avalon</strong> — «Остров яблок», куда увезли раненого короля Артура. Место, откуда нет возврата и нет нужды возвращаться. Масштаб легенды, пережившей 1500 лет. 6 букв, кельтское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="05" data-name="Bluff"><div class="name-card-top"><span class="name">Bluff</span><span class="domain-tag games">игры</span></div><div class="backstory"><strong>Bluff</strong> — масштабный обман: ставка больше, чем рука. Покерное лицо, широкие плечи, ни один мускул не дрогнет. Также: обрыв, утёс. Двойное значение: обман + ландшафт. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="05" data-name="Canopy"><div class="name-card-top"><span class="name">Canopy</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Canopy</strong> — полог тропического леса: широкий зелёный потолок на высоте 30-40 метров. 95% солнечного света поглощается здесь. Масштаб горизонтали: километры непрерывной кроны. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="05" data-name="Rhizome"><div class="name-card-top"><span class="name">Rhizome</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Rhizome</strong> — подземный стебель, растущий горизонтально. Делёз и Гваттари: ризома = сеть без центра, без иерархии. Масштаб горизонтали: бамбук, имбирь, ирис. Философия + ботаника. 7 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+</div></div></div>
+
+<!-- FRAME 06 -->
+<div class="frame-card"><div class="frame-header"><div class="frame-image"><span class="frame-number">Frame 06</span><img src="frame-06.png" alt="Frame 06"></div><div class="frame-info"><h3>Soft Geometric Titanium</h3><p style="color:var(--text-muted); font-size:14px;">Мягкая геометрия, баланс, повседневность.</p><div class="frame-tags"><span class="tag">soft</span><span class="tag">balanced</span><span class="tag">quiet</span></div></div></div>
+<div class="names-section"><h4>Wave 4c</h4><div class="names-grid">
+  <div class="name-card" data-frame="06" data-name="Abbey"><div class="name-card-top"><span class="name">Abbey</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Abbey</strong> — аббатство: тихое место молитвы и труда. Мягкая геометрия арок и садов. Клуатры (крытые дворики) = мягкие прямоугольники. Также: Abbey Road. 5 букв, мягкое звучание.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="06" data-name="Eidos"><div class="name-card-top"><span class="name">Eidos</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Εἶδος</strong> — форма, идея у Платона. Мягкая суть, стоящая за каждой вещью. Не то, что видишь — а то, чем вещь является. Мягкая геометрия идеального. 5 букв, греческое.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="06" data-name="Eden"><div class="name-card-top"><span class="name">Eden</span><span class="domain-tag utopia">утопия</span></div><div class="backstory"><strong>Eden</strong> — сад Эдема: баланс, гармония, мягкость до грехопадения. Место, где всё на своём месте. Также: Anthony Eden, Eden Project (биомы в Корнуолле). 4 буквы, открытое звучание.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="06" data-name="Bard"><div class="name-card-top"><span class="name">Bard</span><span class="domain-tag games">игры (D&D)</span></div><div class="backstory"><strong>Bard</strong> — в D&D: класс, вдохновляющий союзников музыкой. Мягкая сила: не сражается мечом, а усиливает других. Также: бард = поэт-певец (Шекспир — «the Bard»). 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="06" data-name="Moss"><div class="name-card-top"><span class="name">Moss</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Moss</strong> — мох: мягчайшее покрытие планеты. Тихий, зелёный, повсюду. Растёт без корней, без цветов — просто есть. Мягкая геометрия ковра, который никто не планировал. 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="06" data-name="Tendril"><div class="name-card-top"><span class="name">Tendril</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Tendril</strong> — усик растения: мягко обвивает опору, мягко держит. Не хватает — а обнимает. Виноградная лоза, горох, пассифлора. Мягкая хватка, скрывающая стальную силу. 7 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+</div></div></div>
+
+<!-- FRAME 07 -->
+<div class="frame-card"><div class="frame-header"><div class="frame-image"><span class="frame-number">Frame 07</span><img src="frame-07.png" alt="Frame 07"></div><div class="frame-info"><h3>Oval — Acetate + Titanium Layered</h3><p style="color:var(--text-muted); font-size:14px;">Два слоя, два материала, скрытая глубина.</p><div class="frame-tags"><span class="tag">layered</span><span class="tag">dual</span><span class="tag">hidden depth</span></div></div></div>
+<div class="names-section"><h4>Wave 4c</h4><div class="names-grid">
+  <div class="name-card" data-frame="07" data-name="Paladin"><div class="name-card-top"><span class="name">Paladin</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Paladin</strong> — рыцарь-паладин: внешняя доброта скрывает несокрушимую силу. Карл Великий и его 12 паладинов. В D&D: два слоя — воин + священник. Ацетат = обет, титан = меч. 7 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="07" data-name="Dual"><div class="name-card-top"><span class="name">Dual</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Dual</strong> — двойственность: Декарт (тело/разум), инь/ян, волна/частица. Два материала = duality. Самое прямое философское слово для этой оправы — и поэтому оно работает. 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="07" data-name="Elysium"><div class="name-card-top"><span class="name">Elysium</span><span class="domain-tag utopia">утопия</span></div><div class="backstory"><strong>Elysium</strong> — Елисейские поля: слой загробного мира для героев. Не Олимп (боги) и не Тартар (наказание) — а средний слой для достойных. Парижские Champs-Élysées. 7 букв, латинское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="07" data-name="Domino"><div class="name-card-top"><span class="name">Domino</span><span class="domain-tag games">игры</span></div><div class="backstory"><strong>Domino</strong> — кость с двумя половинами, разделёнными линией. Цепная реакция: один толчок валит все слои. Два материала оправы = две половины одного domino. 6 букв, итальянское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="07" data-name="Phloem"><div class="name-card-top"><span class="name">Phloem</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Phloem</strong> — проводящая ткань: транспорт сахаров от листьев к корням. Вместе с xylem — два слоя транспортной системы растения. Буквально: два материала, работающие как один. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="07" data-name="Graft"><div class="name-card-top"><span class="name">Graft</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Graft</strong> — прививка: соединение двух разных растений в одно. Привой (ацетат) на подвое (титан) создаёт нечто, чего не было. Яблони, розы, виноград — всё привито. 5 букв, один слог.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+</div></div></div>
+
+<!-- FRAME 08 -->
+<div class="frame-card"><div class="frame-header"><div class="frame-image"><span class="frame-number">Frame 08</span><img src="frame-08.png" alt="Frame 08"></div><div class="frame-info"><h3>Navigator — Double Bridge</h3><p style="color:var(--text-muted); font-size:14px;">Навигатор, двойной мост, уверенность.</p><div class="frame-tags"><span class="tag">navigator</span><span class="tag">commanding</span><span class="tag">directional</span></div></div></div>
+<div class="names-section"><h4>Wave 4c</h4><div class="names-grid">
+  <div class="name-card" data-frame="08" data-name="Quest"><div class="name-card-top"><span class="name">Quest</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Quest</strong> — странствие рыцаря: навигация к Святому Граалю через неизвестность. Не путешествие (оно кончается), а quest (он трансформирует). Латинское <em>quaerere</em> = искать. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="08" data-name="Telos"><div class="name-card-top"><span class="name">Telos</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Τέλος</strong> — цель, предназначение. Аристотель: всё в природе движется к своему telos. Жёлудь → дуб, ученик → мастер. Навигация к тому, чем ты должен стать. 5 букв, греческое.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="08" data-name="Thule"><div class="name-card-top"><span class="name">Thule</span><span class="domain-tag utopia">утопия</span></div><div class="backstory"><strong>Thule</strong> — <em>Ultima Thule</em>: легендарный остров за краем известного мира. Пифей плыл к нему из Массалии в IV в. до н.э. Навигация за пределы карты. Также: база в Гренландии. 5 букв, латинское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="08" data-name="Knight"><div class="name-card-top"><span class="name">Knight</span><span class="domain-tag games">игры</span></div><div class="backstory"><strong>Knight</strong> — конь: единственная шахматная фигура, прыгающая через другие. Нелинейная навигация буквой «Г». Не идёт прямо — а находит неочевидный путь. 6 букв, немое K.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="08" data-name="Scion"><div class="name-card-top"><span class="name">Scion</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Scion</strong> — привой: побег, пересаженный на другое дерево. Путешественник-переселенец, несущий гены в новое место. Также: наследник, потомок (scion of a family). Навигация генов. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="08" data-name="Wager"><div class="name-card-top"><span class="name">Wager</span><span class="domain-tag games">игры</span></div><div class="backstory"><strong>Wager</strong> — ставка. «Пари Паскаля»: лучше верить и ошибиться, чем не верить и потерять всё. Решение перед неизвестностью — навигация через риск. 5 букв, WA = открытый вызов.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+</div></div></div>
+
+<!-- FRAME 09 -->
+<div class="frame-card"><div class="frame-header"><div class="frame-image"><span class="frame-number">Frame 09</span><img src="frame-09.png" alt="Frame 09"></div><div class="frame-info"><h3>Gold Butterfly Titanium</h3><p style="color:var(--text-muted); font-size:14px;">Золотой butterfly, женственный, тёплый.</p><div class="frame-tags"><span class="tag">gold</span><span class="tag">butterfly</span><span class="tag">feminine</span><span class="tag">warm</span></div></div></div>
+<div class="names-section"><h4>Wave 4c</h4><div class="names-grid">
+  <div class="name-card" data-frame="09" data-name="Isolde"><div class="name-card-top"><span class="name">Isolde</span><span class="domain-tag medieval">средневековье</span></div><div class="backstory"><strong>Isolde</strong> — Тристан и Изольда: золотая любовь, которая сильнее смерти. Wagner, «Liebestod» — смерть от любви. Ирландская принцесса с золотыми волосами. Butterfly = крылья, несущие к возлюбленному. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="09" data-name="Sophia"><div class="name-card-top"><span class="name">Sophia</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Σοφία</strong> — мудрость: женское начало в философии. Hagia Sophia = «Святая Мудрость» — золотые мозаики Стамбула. Фило-софия = любовь к мудрости. Золотая женственность знания. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="09" data-name="Nirvana"><div class="name-card-top"><span class="name">Nirvana</span><span class="domain-tag utopia">утопия / философия</span></div><div class="backstory"><strong>Nirvana</strong> — освобождение от цикла страданий: «задувание свечи». Золотой Будда в нирване. Также: Cobain, 1991, Nevermind. Бабочка, покидающая кокон навсегда. 7 букв, санскрит.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="09" data-name="Tarot"><div class="name-card-top"><span class="name">Tarot</span><span class="domain-tag games">игры</span></div><div class="backstory"><strong>Tarot</strong> — изначально не гадание, а карточная игра (tarocchi, XV век, Милан). Золотые иллюстрации Visconti-Sforza — одни из красивейших артефактов Ренессанса. 5 букв, немое T на конце.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="09" data-name="Orchid"><div class="name-card-top"><span class="name">Orchid</span><span class="domain-tag botany">ботаника</span></div><div class="backstory"><strong>Orchid</strong> — орхидея: золотая, хрупкая, драгоценная. Викторианская «орхидейная лихорадка» — охотники рисковали жизнью. 28 000 видов. Butterfly orchid = бабочковая орхидея. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  <div class="name-card" data-frame="09" data-name="Muse"><div class="name-card-top"><span class="name">Muse</span><span class="domain-tag philo">философия</span></div><div class="backstory"><strong>Μοῦσα</strong> — муза: 9 дочерей Зевса, каждая отвечает за искусство. Источник вдохновения — не создаёт, а пробуждает создателя. Золотые крылья вдохновения. Также: группа Muse. 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+</div></div></div>
+
+<footer>PYE OPTICS · WAVE 4C · СРЕДНЕВЕКОВЬЕ · ФИЛОСОФИЯ · УТОПИИ · ИГРЫ · БОТАНИКА · FEBRUARY 2026</footer>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const STORAGE_KEY = 'pye-wave4c-votes';
+function getVotes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } }
+function saveVotes(v) { localStorage.setItem(STORAGE_KEY, JSON.stringify(v)); }
+function getVoterName() { return document.getElementById('voterName').value.trim() || 'Anonymous'; }
+function vote(btn, type) {
+  const card = btn.closest('.name-card'); const key = card.dataset.frame + '::' + card.dataset.name;
+  const votes = getVotes(); const voter = getVoterName();
+  if (!votes[key]) votes[key] = {};
+  if (votes[key][voter] === type) { delete votes[key][voter]; card.removeAttribute('data-my-vote'); }
+  else { votes[key][voter] = type; card.setAttribute('data-my-vote', type); }
+  saveVotes(votes); renderVotes();
+}
+function renderVotes() {
+  const votes = getVotes(); const voter = getVoterName();
+  let totalYes = 0, totalNo = 0;
+  document.querySelectorAll('.name-card').forEach(card => {
+    const key = card.dataset.frame + '::' + card.dataset.name; const nv = votes[key] || {}; const mv = nv[voter];
+    if (mv) card.setAttribute('data-my-vote', mv); else card.removeAttribute('data-my-vote');
+    const c = { yes: 0, maybe: 0, no: 0 }; Object.values(nv).forEach(v => { if (c[v] !== undefined) c[v]++; });
+    card.querySelectorAll('.vote-btn').forEach(btn => {
+      const t = btn.classList.contains('yes') ? 'yes' : btn.classList.contains('no') ? 'no' : 'maybe';
+      btn.classList.toggle('active', mv === t); const ex = btn.querySelector('.count'); if (ex) ex.remove();
+      if (c[t] > 0) { const b = document.createElement('span'); b.className='count'; b.textContent=c[t]; btn.appendChild(b); }
+    }); if (mv==='yes') totalYes++; if (mv==='no') totalNo++;
+  });
+  document.getElementById('statYes').textContent = totalYes; document.getElementById('statNo').textContent = totalNo;
+}
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+function exportResults() {
+  const votes = getVotes(); const lines = ['PYE Titanium — Wave 4c Results\n']; let cf = '';
+  document.querySelectorAll('.name-card').forEach(card => {
+    const f = 'Frame ' + card.dataset.frame; if (f !== cf) { cf = f; lines.push('\n' + f + ':'); }
+    const key = card.dataset.frame + '::' + card.dataset.name; const nv = votes[key] || {};
+    const y=[], n=[], m=[]; Object.entries(nv).forEach(([v,t])=>{ if(t==='yes')y.push(v); if(t==='no')n.push(v); if(t==='maybe')m.push(v); });
+    let s = '  ' + card.dataset.name; const p = [];
+    if (y.length) p.push('👍 '+y.join(', ')); if (m.length) p.push('🤔 '+m.join(', ')); if (n.length) p.push('👎 '+n.join(', '));
+    if (p.length) s += ' — ' + p.join(' | '); lines.push(s);
+  }); navigator.clipboard.writeText(lines.join('\n')).then(()=>showToast('Результаты скопированы!'));
+}
+function clearVotes() {
+  if (!confirm('Сбросить все голоса?')) return; const votes = getVotes(); const voter = getVoterName();
+  Object.keys(votes).forEach(k => { delete votes[k][voter]; }); saveVotes(votes); renderVotes(); showToast('Голоса сброшены');
+}
+const sn = localStorage.getItem('pye-naming-voter'); if (sn) document.getElementById('voterName').value = sn;
+document.getElementById('voterName').addEventListener('input', function() { localStorage.setItem('pye-naming-voter', this.value); renderVotes(); });
+renderVotes();
+</script>
+</body>
+</html>
