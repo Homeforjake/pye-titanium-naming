@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYE Titanium — Wave 4 Naming</title>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --surface-hover: #222;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --accent: #34d399;
+    --accent-dim: rgba(52, 211, 153, 0.12);
+    --green: #4ade80;
+    --green-dim: rgba(74, 222, 128, 0.12);
+    --red: #f87171;
+    --red-dim: rgba(248, 113, 113, 0.10);
+    --yellow: #fbbf24;
+    --yellow-dim: rgba(251, 191, 36, 0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif; line-height: 1.6; padding: 40px 20px; min-height: 100vh; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 60px; }
+  header h1 { font-size: 13px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  header h2 { font-size: 36px; font-weight: 300; letter-spacing: -0.5px; }
+  header .subtitle { font-size: 14px; color: var(--text-muted); margin-top: 8px; max-width: 640px; margin-left: auto; margin-right: auto; }
+  .voter-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; }
+  .voter-bar label { font-size: 13px; color: var(--text-muted); }
+  .voter-bar input { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; color: var(--text); font-size: 14px; width: 180px; outline: none; }
+  .voter-bar input:focus { border-color: var(--accent); }
+  .stats { display: flex; justify-content: center; gap: 40px; margin-top: 24px; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 300; }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-top: 2px; }
+  .export-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; }
+  .export-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 24px; color: var(--text); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .export-btn:hover { background: var(--surface-hover); border-color: #444; }
+  .export-btn.accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .culture-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+  .culture-nav a { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; transition: all 0.15s; }
+  .culture-nav a:hover { border-color: #444; color: var(--text); }
+  .culture-nav a.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  .frame-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 40px; overflow: hidden; }
+  .frame-header { display: flex; align-items: stretch; min-height: 280px; }
+  .frame-image { width: 360px; min-width: 360px; display: flex; align-items: center; justify-content: center; padding: 28px; background: #fff; position: relative; }
+  .frame-image img { max-width: 100%; max-height: 220px; object-fit: contain; }
+  .frame-number { position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #999; text-transform: uppercase; }
+  .frame-info { flex: 1; padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+  .frame-info h3 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .frame-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .tag { font-size: 11px; padding: 4px 12px; border-radius: 100px; background: var(--accent-dim); color: var(--accent); letter-spacing: 0.5px; }
+  .domain-tag { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; }
+  .domain-tag.jp { background: rgba(248, 113, 113, 0.12); color: #f87171; }
+  .domain-tag.tarot { background: rgba(167, 139, 250, 0.12); color: #a78bfa; }
+  .domain-tag.alchemy { background: rgba(251, 191, 36, 0.12); color: #fbbf24; }
+  .domain-tag.nature { background: rgba(52, 211, 153, 0.12); color: #34d399; }
+  .domain-tag.music { background: rgba(129, 140, 248, 0.12); color: #818cf8; }
+
+  .names-section { padding: 0 28px 28px; }
+  .names-section h4 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .names-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .name-card { padding: 18px; border-radius: 12px; border: 1px solid var(--border); transition: all 0.15s; }
+  .name-card:hover { border-color: #444; background: var(--surface-hover); }
+  .name-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .name-card .name { font-size: 22px; font-weight: 400; letter-spacing: 0.5px; }
+  .name-card .backstory { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .name-card .backstory strong { color: var(--text); font-weight: 500; }
+  .name-card .backstory em { color: var(--text-muted); }
+  .name-card .vote-row { display: flex; gap: 4px; margin-top: 10px; }
+  .vote-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.15s; position: relative; color: #666; }
+  .vote-btn:hover { border-color: #444; background: var(--surface-hover); }
+  .vote-btn.yes:hover, .vote-btn.yes.active { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.3); color: var(--green); }
+  .vote-btn.no:hover, .vote-btn.no.active { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.25); color: var(--red); }
+  .vote-btn.maybe:hover, .vote-btn.maybe.active { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.25); color: var(--yellow); }
+  .vote-btn .count { position: absolute; top: -6px; right: -6px; font-size: 9px; font-weight: 600; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; line-height: 1; }
+  .vote-btn.yes .count { background: var(--green); color: #000; }
+  .vote-btn.no .count { background: var(--red); color: #fff; }
+  .vote-btn.maybe .count { background: var(--yellow); color: #000; }
+  .name-card[data-my-vote="yes"] { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.15); }
+  .name-card[data-my-vote="no"] { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.1); opacity: 0.45; }
+  .name-card[data-my-vote="no"] .name { text-decoration: line-through; }
+  .name-card[data-my-vote="maybe"] { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.1); }
+
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 12px 24px; border-radius: 10px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
+  .toast.show { opacity: 1; }
+  footer { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 12px; letter-spacing: 1px; }
+
+  @media (max-width: 900px) {
+    .frame-header { flex-direction: column; }
+    .frame-image { width: 100%; min-width: 0; min-height: 200px; }
+    header h2 { font-size: 28px; }
+    .stats { gap: 20px; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav class="culture-nav">
+  <a href="index.html">Основной (Wave 3)</a>
+  <a href="anime.html">Аниме</a>
+  <a href="cinema.html">Азиатское кино</a>
+  <a href="books.html">Литература</a>
+  <a href="wave4.html" class="active">Wave 4</a>
+</nav>
+
+<header>
+  <h1>PYE Optics</h1>
+  <h2>Titanium Collection — Wave 4</h2>
+  <p class="subtitle">54 названия из 5 доменов: <strong style="color:#f87171">японская эстетика</strong>, <strong style="color:#a78bfa">таро</strong>, <strong style="color:#fbbf24">алхимия</strong>, <strong style="color:#34d399">природные явления</strong>, <strong style="color:#818cf8">музыка</strong>. Название даёт характер, а не описывает оправу.</p>
+  <div class="voter-bar">
+    <label>Твоё имя:</label>
+    <input type="text" id="voterName" placeholder="Введи имя..." autocomplete="off">
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-value">9</div><div class="stat-label">Моделей</div></div>
+    <div class="stat"><div class="stat-value">54</div><div class="stat-label">Названий</div></div>
+    <div class="stat"><div class="stat-value green" id="statYes">0</div><div class="stat-label">👍 Да</div></div>
+    <div class="stat"><div class="stat-value red" id="statNo">0</div><div class="stat-label">👎 Нет</div></div>
+  </div>
+</header>
+
+<div class="export-bar">
+  <button class="export-btn accent" onclick="exportResults()">Скопировать результаты</button>
+  <button class="export-btn" onclick="clearVotes()">Сбросить голоса</button>
+</div>
+
+<!-- ======================== FRAME 01 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 01</span><img src="frame-01.png" alt="Frame 01"></div>
+    <div class="frame-info">
+      <h3>Geometric Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Угловатая геометрия, точные линии, титан.</p>
+      <div class="frame-tags"><span class="tag">angular</span><span class="tag">precise</span><span class="tag">minimal</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Wave 4</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="01" data-name="Iki">
+        <div class="name-card-top"><span class="name">Iki</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>粋</strong> — утончённая дерзость эпохи Эдо. Не кричит, но все чувствуют. Эстетика, при которой лучше быть минимально идеальным, чем пышно избыточным. 3 буквы — самое короткое имя, самый точный удар.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Sigil">
+        <div class="name-card-top"><span class="name">Sigil</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>Sigil</strong> — магический символ, заряженный намерением. Геометрия как ритуал: каждая линия несёт смысл. От средневековых гримуаров до Остина Османа Спейра. 5 букв, латинское <em>sigillum</em> = печать.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Azoth">
+        <div class="name-card-top"><span class="name">Azoth</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>Azoth</strong> — универсальный растворитель алхимиков. Растворяет всё лишнее, оставляя чистую суть. Парацельс назвал так свой меч. Звук: A-Z (от начала до конца алфавита) + острое TH. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Rime">
+        <div class="name-card-top"><span class="name">Rime</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Rime</strong> — изморозь. Кристаллы льда, рисующие угловатые узоры на стекле. Coleridge: <em>Rime of the Ancient Mariner</em>. Холодная красота, застывшая в линиях. 4 буквы, один слог.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Fugue">
+        <div class="name-card-top"><span class="name">Fugue</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Fugue</strong> — музыкальная форма, где голоса пересекаются под точными углами. Бах, «Искусство фуги». Математика в звуке: тема входит, отражается, строит геометрию. 5 букв, французское звучание.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Vitriol">
+        <div class="name-card-top"><span class="name">Vitriol</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>V.I.T.R.I.O.L.</strong> — <em>Visita Interiora Terrae Rectificando Invenies Occultum Lapidem</em>. «Посети недра земли — очищением обретёшь тайный камень.» Самый знаменитый алхимический акроним. 7 букв, кислотная острота.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 02 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 02</span><img src="frame-02.png" alt="Frame 02"></div>
+    <div class="frame-info">
+      <h3>Round Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Классический круг, полнота, винтаж.</p>
+      <div class="frame-tags"><span class="tag">round</span><span class="tag">warm</span><span class="tag">vintage</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Wave 4</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="02" data-name="Yugen">
+        <div class="name-card-top"><span class="name">Yugen</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>幽玄</strong> — таинственная глубина, которую чувствуешь, но не можешь назвать. Zeami (создатель театра Но) считал yugen высшей эстетикой. Глубокое, круглое слово — как заглянуть в колодец. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="02" data-name="Fool">
+        <div class="name-card-top"><span class="name">Fool</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>The Fool (0)</strong> — нулевая карта, круглый ноль, начало всего. Шагает с обрыва с улыбкой — невинность, открытость, бесстрашие. Не глупец, а тот, кто свободен от страха. 4 буквы. Бесконечный потенциал.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="02" data-name="Opus">
+        <div class="name-card-top"><span class="name">Opus</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>Magnum Opus</strong> — Великое Делание, цель алхимика. Полное, завершённое творение. Также: opus в музыке — номер произведения. Полнота смысла в 4 буквах. Круглое O на старте и финише.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="02" data-name="Brume">
+        <div class="name-card-top"><span class="name">Brume</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Brume</strong> — туман, мягкое обволакивание. Французское слово: границы размыты, контуры растворены. Утренний brume на озере — как эта оправа: форма, в которой всё мягко, но всё на месте. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="02" data-name="Dummy">
+        <div class="name-card-top"><span class="name">Dummy</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Dummy</strong> — Portishead, 1994. Дебютный альбом, определивший trip-hop: виниловое тепло, хрипы, бас из Бристоля. «Wandering Star», «Glory Box». Круглый, тёплый, как эта оправа. 5 букв. Для тех кто знает.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="02" data-name="Mujo">
+        <div class="name-card-top"><span class="name">Mujo</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>無常</strong> — непостоянство. Центральная идея буддизма: всё меняется, всё проходит, всё возвращается. Круг рождения и смерти. Круглая оправа как mujo: полная форма, знающая, что она временна. 4 буквы.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 03 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 03</span><img src="frame-03.png" alt="Frame 03"></div>
+    <div class="frame-info">
+      <h3>Semi-Rimless Gold Polygon</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Золотой полигон, ювелирный, эфемерный.</p>
+      <div class="frame-tags"><span class="tag">gold</span><span class="tag">polygon</span><span class="tag">ethereal</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Wave 4</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="03" data-name="Kintsugi">
+        <div class="name-card-top"><span class="name">Kintsugi</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>金継ぎ</strong> — трещины, залитые золотом. Разбитое не выбрасывается — оно становится красивее. Золото + ремонт = история в каждом шве. Эта оправа — kintsugi: золото, которое не скрывает, а подчёркивает. 8 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="03" data-name="Aurum">
+        <div class="name-card-top"><span class="name">Aurum</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>Aurum</strong> — латынь: золото. Au в периодической таблице. Цель каждого алхимика. Не «gold» (банально), а его настоящее, древнее имя. 5 букв, звучит как заклинание.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="03" data-name="Aeon">
+        <div class="name-card-top"><span class="name">Aeon</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>Aeon (XX)</strong> — в колоде Thoth Алистера Кроули заменяет «Суд». Конец одной эры, начало другой. Вечность, заключённая в мгновении. 4 буквы, два слога, звучит как вдох.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="03" data-name="Mirage">
+        <div class="name-card-top"><span class="name">Mirage</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Mirage</strong> — золотое мерцание на горизонте пустыни. Видишь, но не можешь коснуться. Оптическая иллюзия, рождённая жаром. Полуободковая золотая оправа — сама по себе мираж: почти невесомая. 6 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="03" data-name="Blonde">
+        <div class="name-card-top"><span class="name">Blonde</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Blonde</strong> — Frank Ocean, 2016. Золотой, интимный, слоистый. Альбом, который вышел без промо и стал поколенческим манифестом. Между словами больше, чем в словах. 6 букв. Для тех кто знает — мгновенно.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="03" data-name="Solstice">
+        <div class="name-card-top"><span class="name">Solstice</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Solstice</strong> — солнцестояние: момент, когда солнце замирает в пике. Sol (солнце) + sistere (остановиться). Пик золотого света, самый длинный день. 8 букв, латинские корни, тёплое звучание.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 04 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 04</span><img src="frame-04.png" alt="Frame 04"></div>
+    <div class="frame-info">
+      <h3>Browline — Titanium + Acetate</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Интеллект + дерзость, два материала.</p>
+      <div class="frame-tags"><span class="tag">intellectual</span><span class="tag">bold</span><span class="tag">dual nature</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Wave 4</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="04" data-name="Ukiyo">
+        <div class="name-card-top"><span class="name">Ukiyo</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>浮世</strong> — «плавучий мир». Район удовольствий Эдо: гейши, театр кабуки, укиё-э гравюры. Интеллектуальный гедонизм: наслаждайся, потому что всё бренно. Ацетат = удовольствие, титан = бренность. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Hermit">
+        <div class="name-card-top"><span class="name">Hermit</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>The Hermit (IX)</strong> — одинокий искатель на вершине горы с фонарём. Знает ответы, но не навязывает. Интеллектуальная оправа для того, кто уже нашёл, но продолжает искать. 6 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Nigredo">
+        <div class="name-card-top"><span class="name">Nigredo</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>Nigredo</strong> — первая стадия Великого Делания: почернение, разложение старого. Без nigredo нет трансформации. Тёмный ацетат бровей = nigredo — необходимая тьма перед светом. 7 букв, латинское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Gyre">
+        <div class="name-card-top"><span class="name">Gyre</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Gyre</strong> — океанический водоворот. Yeats: <em>«Turning and turning in the widening gyre / The falcon cannot hear the falconer.»</em> Литература + природа в одном слове. 4 буквы, GY = энергия вращения.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Ziggy">
+        <div class="name-card-top"><span class="name">Ziggy</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Ziggy</strong> — Bowie, 1972. <em>The Rise and Fall of Ziggy Stardust</em>. Двойная идентичность: Ziggy/Bowie, персонаж/создатель, ацетат/титан. Интеллектуальный глэм-рок, маска как философия. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Magus">
+        <div class="name-card-top"><span class="name">Magus</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>The Magus</strong> — карта I в колоде Thoth. Все инструменты перед ним: он знает, как соединить. Также: John Fowles, «The Magus» — роман-головоломка на греческом острове. 5 букв, латинское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 05 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 05</span><img src="frame-05.png" alt="Frame 05"></div>
+    <div class="frame-info">
+      <h3>Wide Rectangular Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Широкий, архитектурный, масштабный.</p>
+      <div class="frame-tags"><span class="tag">wide</span><span class="tag">massive</span><span class="tag">architectural</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Wave 4</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="05" data-name="Engawa">
+        <div class="name-card-top"><span class="name">Engawa</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>縁側</strong> — широкая деревянная платформа между домом и садом. Ни внутри, ни снаружи — пороговое пространство. Архитектурный элемент японского дома, определяющий его ширину. 6 букв, тёплое звучание.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Tower">
+        <div class="name-card-top"><span class="name">Tower</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>The Tower (XVI)</strong> — молния ударяет в башню, корона падает, фигуры летят. Масштабное разрушение старого мира, без которого невозможно новое. Карта, которой боятся все, но которая освобождает. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Rubedo">
+        <div class="name-card-top"><span class="name">Rubedo</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>Rubedo</strong> — финальная стадия Великого Делания: покраснение. Золото обретено, философский камень создан. Масштабное завершение пути. Юнг видел в rubedo целостность личности. 6 букв, латинское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Caldera">
+        <div class="name-card-top"><span class="name">Caldera</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Caldera</strong> — вулканический кратер, образованный коллапсом вершины. Масштаб, который виден из космоса: Йеллоустоун, Кракатау, Санторини. Испанское/латинское «котёл». 7 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Requiem">
+        <div class="name-card-top"><span class="name">Requiem</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Requiem</strong> — заупокойная месса. Моцарт, Форе, Верди, Лигети (в «2001: Космическая одиссея»). Грандиозное прощание, масштаб собора. Звучит как финал, который больше начала. 7 букв, латынь.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Fjord">
+        <div class="name-card-top"><span class="name">Fjord</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Fjord</strong> — узкий залив между скалами, вырезанный ледниками за тысячелетия. Норвежская мощь: вертикальные стены, горизонтальная вода. 5 букв, скандинавское, без гласных на старте — ударное FJ.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 06 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 06</span><img src="frame-06.png" alt="Frame 06"></div>
+    <div class="frame-info">
+      <h3>Soft Geometric Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Мягкая геометрия, баланс, повседневность.</p>
+      <div class="frame-tags"><span class="tag">soft</span><span class="tag">balanced</span><span class="tag">quiet</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Wave 4</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="06" data-name="Wabi">
+        <div class="name-card-top"><span class="name">Wabi</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>侘</strong> — красота в несовершенстве, простоте, скромности. Чайная чашка с неровным краем ценнее идеальной. Самое тихое слово в японской эстетике — и самое глубокое. 4 буквы, мягкое W + открытое A.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="06" data-name="Rune">
+        <div class="name-card-top"><span class="name">Rune</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>Rune</strong> — древний символ, мягко вырезанный в камне, кости или дереве. Скандинавские руны: каждая — и буква, и заклинание. Тихая магия, не кричащая о себе. 4 буквы, мягкое RU + закрытое NE.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="06" data-name="Albedo">
+        <div class="name-card-top"><span class="name">Albedo</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>Albedo</strong> — вторая стадия: побеление, очищение. После nigredo (тьмы) приходит albedo (свет). Мягкость после шторма. Также: albedo в физике — отражательная способность поверхности. 6 букв, латинское, мягкое.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="06" data-name="Zephyr">
+        <div class="name-card-top"><span class="name">Zephyr</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Zephyr</strong> — нежный западный ветер. Греки считали Зефира самым добрым из ветров — приносил весну. Боттичелли изобразил его в «Рождении Венеры». 6 букв, Z на старте даёт характер мягкому слову.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="06" data-name="Hymn">
+        <div class="name-card-top"><span class="name">Hymn</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Hymn</strong> — гимн, тихая преданность. Не рок, не джаз — чистый голос в пустом пространстве. Arvo Pärt, Górecki, Tavener. Молитва без слов. 4 буквы, немое H + закрытое MN = звук, который не звучит.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="06" data-name="Umbra">
+        <div class="name-card-top"><span class="name">Umbra</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Umbra</strong> — тень, но не тьма. Полутень, где формы размываются и мягчеют. В астрономии: центральная тень при затмении. Латынь. 5 букв, U + мягкое MBR = обволакивание.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 07 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 07</span><img src="frame-07.png" alt="Frame 07"></div>
+    <div class="frame-info">
+      <h3>Oval — Acetate + Titanium Layered</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Два слоя, два материала, скрытая глубина.</p>
+      <div class="frame-tags"><span class="tag">layered</span><span class="tag">dual</span><span class="tag">hidden depth</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Wave 4</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="07" data-name="Komorebi">
+        <div class="name-card-top"><span class="name">Komorebi</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>木漏れ日</strong> — солнечный свет, просеянный сквозь слои листвы. Дерево (木) + просачиваться (漏れ) + день (日). THE слоистое слово: свет проходит через слой за слоем, становясь мягче. 8 букв, длинное и красивое.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Chariot">
+        <div class="name-card-top"><span class="name">Chariot</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>The Chariot (VII)</strong> — две сфинксы (чёрная и белая) тянут в разные стороны. Победа через управление противоположностями. Два материала оправы = два зверя, которыми нужно управлять. 7 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Amalgam">
+        <div class="name-card-top"><span class="name">Amalgam</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>Amalgam</strong> — сплав ртути с другим металлом. Два вещества, ставшие одним неразделимым. В стоматологии, в зеркалах, в алхимии — всюду два становятся одним. 7 букв, арабские корни.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Sirocco">
+        <div class="name-card-top"><span class="name">Sirocco</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Sirocco</strong> — горячий ветер из Сахары, несущий слои песка через Средиземноморье. Достигает Сицилии, Мальты, юга Франции — каждый слой расстояния меняет его. Итальянское/арабское звучание. 7 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Vesper">
+        <div class="name-card-top"><span class="name">Vesper</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Vesper</strong> — вечерняя молитва, сумерки. Monteverdi, <em>Vespro della Beata Vergine</em> (1610). Слой между днём и ночью, когда всё двоится. Также: Vesper Lynd (Бонд). 6 букв, латинское, бархатное.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Prima">
+        <div class="name-card-top"><span class="name">Prima</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>Prima materia</strong> — первичная материя, сырьё до любой трансформации. Хаос, из которого алхимик создаёт порядок. Первый слой всего. Также: prima в балете — первая. 5 букв, латинское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 08 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 08</span><img src="frame-08.png" alt="Frame 08"></div>
+    <div class="frame-info">
+      <h3>Navigator — Double Bridge</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Навигатор, двойной мост, уверенность.</p>
+      <div class="frame-tags"><span class="tag">navigator</span><span class="tag">commanding</span><span class="tag">directional</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Wave 4</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="08" data-name="Sabi">
+        <div class="name-card-top"><span class="name">Sabi</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>寂</strong> — патина времени, красота того, что путешествовало и износилось. Ржавчина на железе, мох на камне, потёртость кожи. Этот навигатор — оправа, которая видела мир. 4 буквы, тихое.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="08" data-name="Arcana">
+        <div class="name-card-top"><span class="name">Arcana</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>Arcana</strong> — скрытые тайны. Major Arcana — 22 карты, 22 стадии пути. Не карта, а весь маршрут целиком. Латынь: <em>arcanum</em> = запертый ларец. 6 букв, A на старте и финише — замкнутый путь.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="08" data-name="Elixir">
+        <div class="name-card-top"><span class="name">Elixir</span><span class="domain-tag alchemy">алхимия</span></div>
+        <div class="backstory"><strong>Elixir</strong> — эликсир жизни, цель любого путешествия алхимика. Не средство, а назначение. То, ради чего идёшь. Арабское <em>al-iksīr</em>, пришло через Испанию. 6 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="08" data-name="Foehn">
+        <div class="name-card-top"><span class="name">Foehn</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Foehn</strong> — тёплый сухой ветер, перевалив через горы, спускается в долину. Навигация через хребет. Альпийское немецкое слово: 5 букв, необычное OEH — запоминается с первого раза.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="08" data-name="Omen">
+        <div class="name-card-top"><span class="name">Omen</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>Omen</strong> — предзнаменование, знак на пути. Не карта и не компас — а чувство, что идёшь правильно. Римские ауспиции: птицы указывают путь. 4 буквы, O + MEN = тяжёлый, значимый.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="08" data-name="Prelude">
+        <div class="name-card-top"><span class="name">Prelude</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Prelude</strong> — увертюра, то что звучит перед началом. Шопен написал 24 прелюдии — каждая открывает дверь. Дебюсси, «Прелюдия к послеполуденному отдыху фавна». 7 букв, французское/латинское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 09 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 09</span><img src="frame-09.png" alt="Frame 09"></div>
+    <div class="frame-info">
+      <h3>Gold Butterfly Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Золотой butterfly, женственный, тёплый.</p>
+      <div class="frame-tags"><span class="tag">gold</span><span class="tag">butterfly</span><span class="tag">feminine</span><span class="tag">warm</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Wave 4</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="09" data-name="Mono">
+        <div class="name-card-top"><span class="name">Mono</span><span class="domain-tag jp">японское</span></div>
+        <div class="backstory"><strong>物の哀れ</strong> — <em>mono no aware</em>, печальное очарование вещей. Опавший лепесток красивее цветущего. Также: Mono — японская пост-рок группа, играющая золотые стены звука. 4 буквы.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="09" data-name="Empress">
+        <div class="name-card-top"><span class="name">Empress</span><span class="domain-tag tarot">таро</span></div>
+        <div class="backstory"><strong>The Empress (III)</strong> — женская сила, плодородие, золотой трон, венок из звёзд. Карта Венеры. Не подчинение — а изобилие, которое создаёт жизнь. Butterfly = её крылья. 7 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="09" data-name="Cirrus">
+        <div class="name-card-top"><span class="name">Cirrus</span><span class="domain-tag nature">природа</span></div>
+        <div class="backstory"><strong>Cirrus</strong> — тончайшие облака на высоте 10 км, золотые нити на закате. Латынь: «локон волос». Самые высокие, самые лёгкие, самые золотые облака. 6 букв, двойное R = вибрация.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="09" data-name="Loveless">
+        <div class="name-card-top"><span class="name">Loveless</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Loveless</strong> — My Bloody Valentine, 1991. Альбом, который стоил Creation Records банкротства. Стена шума, внутри которой — нежность. Розово-золотая обложка. Звук, похожий на бабочку в урагане. 8 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="09" data-name="Nocturne">
+        <div class="name-card-top"><span class="name">Nocturne</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Nocturne</strong> — ночная пьеса. Шопен при свечах, Дебюсси при луне, Whistler в живописи. Золотой свет в темноте — как эта оправа: тёплое золото на фоне ночи. 8 букв, французское, бархатное.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="09" data-name="Reverie">
+        <div class="name-card-top"><span class="name">Reverie</span><span class="domain-tag music">музыка</span></div>
+        <div class="backstory"><strong>Reverie</strong> — мечтание наяву. Дебюсси, «Rêverie» (1890). Бабочка между сном и явью — крылья движутся, но она не летит, а парит. Французское, 7 букв, RE + мягкое VERIE = плавное погружение.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>PYE OPTICS · WAVE 4 · ЯПОНСКАЯ ЭСТЕТИКА · ТАРО · АЛХИМИЯ · ПРИРОДА · МУЗЫКА · FEBRUARY 2026</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'pye-wave4-votes';
+function getVotes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } }
+function saveVotes(v) { localStorage.setItem(STORAGE_KEY, JSON.stringify(v)); }
+function getVoterName() { return document.getElementById('voterName').value.trim() || 'Anonymous'; }
+
+function vote(btn, type) {
+  const card = btn.closest('.name-card');
+  const key = card.dataset.frame + '::' + card.dataset.name;
+  const votes = getVotes();
+  const voter = getVoterName();
+  if (!votes[key]) votes[key] = {};
+  if (votes[key][voter] === type) { delete votes[key][voter]; card.removeAttribute('data-my-vote'); }
+  else { votes[key][voter] = type; card.setAttribute('data-my-vote', type); }
+  saveVotes(votes); renderVotes();
+}
+
+function renderVotes() {
+  const votes = getVotes(); const voter = getVoterName();
+  let totalYes = 0, totalNo = 0;
+  document.querySelectorAll('.name-card').forEach(card => {
+    const key = card.dataset.frame + '::' + card.dataset.name;
+    const nv = votes[key] || {}; const mv = nv[voter];
+    if (mv) card.setAttribute('data-my-vote', mv); else card.removeAttribute('data-my-vote');
+    const c = { yes: 0, maybe: 0, no: 0 };
+    Object.values(nv).forEach(v => { if (c[v] !== undefined) c[v]++; });
+    card.querySelectorAll('.vote-btn').forEach(btn => {
+      const t = btn.classList.contains('yes') ? 'yes' : btn.classList.contains('no') ? 'no' : 'maybe';
+      btn.classList.toggle('active', mv === t);
+      const ex = btn.querySelector('.count'); if (ex) ex.remove();
+      if (c[t] > 0) { const b = document.createElement('span'); b.className='count'; b.textContent=c[t]; btn.appendChild(b); }
+    });
+    if (mv==='yes') totalYes++; if (mv==='no') totalNo++;
+  });
+  document.getElementById('statYes').textContent = totalYes;
+  document.getElementById('statNo').textContent = totalNo;
+}
+
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+
+function exportResults() {
+  const votes = getVotes(); const lines = ['PYE Titanium — Wave 4 Results\n'];
+  let cf = '';
+  document.querySelectorAll('.name-card').forEach(card => {
+    const f = 'Frame ' + card.dataset.frame;
+    if (f !== cf) { cf = f; lines.push('\n' + f + ':'); }
+    const key = card.dataset.frame + '::' + card.dataset.name;
+    const nv = votes[key] || {};
+    const y=[], n=[], m=[];
+    Object.entries(nv).forEach(([v,t])=>{ if(t==='yes')y.push(v); if(t==='no')n.push(v); if(t==='maybe')m.push(v); });
+    let s = '  ' + card.dataset.name;
+    const p = [];
+    if (y.length) p.push('👍 '+y.join(', ')); if (m.length) p.push('🤔 '+m.join(', ')); if (n.length) p.push('👎 '+n.join(', '));
+    if (p.length) s += ' — ' + p.join(' | ');
+    lines.push(s);
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>showToast('Результаты скопированы!'));
+}
+
+function clearVotes() {
+  if (!confirm('Сбросить все голоса?')) return;
+  const votes = getVotes(); const voter = getVoterName();
+  Object.keys(votes).forEach(k => { delete votes[k][voter]; });
+  saveVotes(votes); renderVotes(); showToast('Голоса сброшены');
+}
+
+const sn = localStorage.getItem('pye-naming-voter');
+if (sn) document.getElementById('voterName').value = sn;
+document.getElementById('voterName').addEventListener('input', function() {
+  localStorage.setItem('pye-naming-voter', this.value); renderVotes();
+});
+renderVotes();
+</script>
+</body>
+</html>
