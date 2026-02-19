@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYE Titanium — Literature Naming</title>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --surface-hover: #222;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --text-dim: #555;
+    --accent: #a78bfa;
+    --accent-dim: rgba(167, 139, 250, 0.12);
+    --green: #4ade80;
+    --green-dim: rgba(74, 222, 128, 0.12);
+    --red: #f87171;
+    --red-dim: rgba(248, 113, 113, 0.10);
+    --yellow: #fbbf24;
+    --yellow-dim: rgba(251, 191, 36, 0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
+    line-height: 1.6; padding: 40px 20px; min-height: 100vh;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 60px; }
+  header h1 { font-size: 13px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  header h2 { font-size: 36px; font-weight: 300; letter-spacing: -0.5px; }
+  header .subtitle { font-size: 14px; color: var(--text-muted); margin-top: 8px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .voter-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; }
+  .voter-bar label { font-size: 13px; color: var(--text-muted); }
+  .voter-bar input { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; color: var(--text); font-size: 14px; width: 180px; outline: none; }
+  .voter-bar input:focus { border-color: var(--accent); }
+  .stats { display: flex; justify-content: center; gap: 40px; margin-top: 24px; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 300; }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-top: 2px; }
+  .export-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; }
+  .export-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 24px; color: var(--text); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .export-btn:hover { background: var(--surface-hover); border-color: #444; }
+  .export-btn.accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .culture-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+  .culture-nav a { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; transition: all 0.15s; }
+  .culture-nav a:hover { border-color: #444; color: var(--text); }
+  .culture-nav a.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  .frame-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 40px; overflow: hidden; }
+  .frame-header { display: flex; align-items: stretch; min-height: 280px; }
+  .frame-image { width: 360px; min-width: 360px; display: flex; align-items: center; justify-content: center; padding: 28px; background: #fff; position: relative; }
+  .frame-image img { max-width: 100%; max-height: 220px; object-fit: contain; }
+  .frame-number { position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #999; text-transform: uppercase; }
+  .frame-info { flex: 1; padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+  .frame-info h3 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .frame-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .tag { font-size: 11px; padding: 4px 12px; border-radius: 100px; background: var(--accent-dim); color: var(--accent); letter-spacing: 0.5px; }
+
+  .names-section { padding: 0 28px 28px; }
+  .names-section h4 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .names-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+
+  .name-card { padding: 18px; border-radius: 12px; border: 1px solid var(--border); transition: all 0.15s; }
+  .name-card:hover { border-color: #444; background: var(--surface-hover); }
+  .name-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .name-card .name { font-size: 22px; font-weight: 400; letter-spacing: 0.5px; }
+  .name-card .source-tag { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; background: var(--accent-dim); color: var(--accent); }
+  .name-card .backstory { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .name-card .backstory strong { color: var(--text); font-weight: 500; }
+  .name-card .vote-row { display: flex; gap: 4px; margin-top: 10px; }
+  .vote-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.15s; position: relative; color: #666; }
+  .vote-btn:hover { border-color: #444; background: var(--surface-hover); }
+  .vote-btn.yes:hover, .vote-btn.yes.active { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.3); color: var(--green); }
+  .vote-btn.no:hover, .vote-btn.no.active { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.25); color: var(--red); }
+  .vote-btn.maybe:hover, .vote-btn.maybe.active { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.25); color: var(--yellow); }
+  .vote-btn .count { position: absolute; top: -6px; right: -6px; font-size: 9px; font-weight: 600; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; line-height: 1; }
+  .vote-btn.yes .count { background: var(--green); color: #000; }
+  .vote-btn.no .count { background: var(--red); color: #fff; }
+  .vote-btn.maybe .count { background: var(--yellow); color: #000; }
+  .name-card[data-my-vote="yes"] { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.15); }
+  .name-card[data-my-vote="no"] { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.1); opacity: 0.45; }
+  .name-card[data-my-vote="no"] .name { text-decoration: line-through; }
+  .name-card[data-my-vote="maybe"] { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.1); }
+
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 12px 24px; border-radius: 10px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
+  .toast.show { opacity: 1; }
+  footer { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 12px; letter-spacing: 1px; }
+
+  @media (max-width: 900px) {
+    .frame-header { flex-direction: column; }
+    .frame-image { width: 100%; min-width: 0; min-height: 200px; }
+    header h2 { font-size: 28px; }
+    .stats { gap: 20px; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav class="culture-nav">
+  <a href="index.html">Основной дашборд</a>
+  <a href="anime.html">Аниме</a>
+  <a href="cinema.html">Азиатское кино</a>
+  <a href="books.html" class="active">Литература</a>
+</nav>
+
+<header>
+  <h1>PYE Optics</h1>
+  <h2>Titanium Collection — Literature Edition</h2>
+  <p class="subtitle">30 названий из мировой литературы (Борхес, Мисима, Кавабата, Кальвино, Мураками, Лем, Мелвилл), подобранных к 9 оправам.</p>
+  <div class="voter-bar">
+    <label>Твоё имя:</label>
+    <input type="text" id="voterName" placeholder="Введи имя..." autocomplete="off">
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-value">9</div><div class="stat-label">Моделей</div></div>
+    <div class="stat"><div class="stat-value">30</div><div class="stat-label">Книг / авторов</div></div>
+    <div class="stat"><div class="stat-value green" id="statYes">0</div><div class="stat-label">👍 Да</div></div>
+    <div class="stat"><div class="stat-value red" id="statNo">0</div><div class="stat-label">👎 Нет</div></div>
+  </div>
+</header>
+
+<div class="export-bar">
+  <button class="export-btn accent" onclick="exportResults()">Скопировать результаты</button>
+  <button class="export-btn" onclick="clearVotes()">Сбросить голоса</button>
+</div>
+
+<!-- ======================== FRAME 01 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 01</span><img src="frame-01.png" alt="Frame 01"></div>
+    <div class="frame-info">
+      <h3>Geometric Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Угловатая геометрия, точные линии. Авторы и книги с <strong style="color:var(--text)">лабиринтами, кристальной точностью, формальной красотой</strong>.</p>
+      <div class="frame-tags"><span class="tag">angular</span><span class="tag">precise</span><span class="tag">labyrinth</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Литература</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="01" data-name="Musashi">
+        <div class="name-card-top"><span class="name">Musashi</span><span class="source-tag">Eiji Yoshikawa</span></div>
+        <div class="backstory"><strong>«Мусаси»</strong> — эпический роман о Miyamoto Musashi, величайшем мечнике Японии. Путь меча = путь геометрии: каждый удар — линия, каждая стойка — угол. «Книга пяти колец» (Go Rin No Sho) — трактат о стратегии как архитектуре. Эта оправа — его клинок: точный, угловатый, без лишнего. 7 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Mishima">
+        <div class="name-card-top"><span class="name">Mishima</span><span class="source-tag">Yukio Mishima</span></div>
+        <div class="backstory"><strong>Yukio Mishima</strong> — кристальная проза, острые углы эстетики. «Золотой Храм»: красота как геометрическая одержимость. «Море изобилия»: четыре тома, четыре жизни, одна структура. Mishima сам был геометричен: тело как храм, слово как клинок. 7 букв, японское, культовое.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Borges">
+        <div class="name-card-top"><span class="name">Borges</span><span class="source-tag">Jorge Luis Borges</span></div>
+        <div class="backstory"><strong>Jorge Luis Borges</strong> — лабиринты, зеркала, геометрические невозможности. «Вавилонская библиотека»: бесконечная геометрия гексагональных залов. «Сад расходящихся тропок»: время как ветвящийся угол. Слепой, видевший больше всех. Эта оправа — его библиотека: точная, бесконечная. 6 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Zeno">
+        <div class="name-card-top"><span class="name">Zeno</span><span class="source-tag">Italo Svevo / Зенон Элейский</span></div>
+        <div class="backstory"><strong>Зено</strong> — двойная отсылка. Italo Svevo, «Самосознание Зено»: математическая точность невроза, каждая мысль — угол самоанализа. И Зенон Элейский: парадоксы движения, стрела, которая не летит. Геометрия неподвижности. 4 буквы, звучит как латынь и будущее одновременно.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 02 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 02</span><img src="frame-02.png" alt="Frame 02"></div>
+    <div class="frame-info">
+      <h3>Round Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Классический круг. Книги о <strong style="color:var(--text)">тепле, завершённости, сердце</strong>.</p>
+      <div class="frame-tags"><span class="tag">round</span><span class="tag">warm</span><span class="tag">heart</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Литература</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="02" data-name="Kokoro">
+        <div class="name-card-top"><span class="name">Kokoro</span><span class="source-tag">Natsume Soseki, 1914</span></div>
+        <div class="backstory"><strong>«Сердце» (こころ)</strong> — главный роман японской литературы. «Kokoro» = «сердце, разум, душа» — круглое, полное, тёплое слово. Soseki написал о вине, одиночестве и невозможности довериться. Круглая оправа — это и есть kokoro: полная форма, тёплый центр. 6 букв, японское, мгновенно узнаваемое.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="02" data-name="Izu">
+        <div class="name-card-top"><span class="name">Izu</span><span class="source-tag">Kawabata, 1926</span></div>
+        <div class="backstory"><strong>«Танцовщица из Идзу» (伊豆の踊子)</strong> — Kawabata, Нобелевский лауреат. Тёплые источники полуострова Izu, округлые холмы, первая любовь. Повесть, в которой ничего не происходит — и происходит всё. 3 буквы — самое короткое имя, самое тёплое место. Фонетика: мягкое «и», открытое «зу».</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="02" data-name="Cosimo">
+        <div class="name-card-top"><span class="name">Cosimo</span><span class="source-tag">Italo Calvino, 1957</span></div>
+        <div class="backstory"><strong>«Барон на дереве»</strong> — Cosimo Piovasco di Rondò залезает на дерево в 12 лет и больше не спускается. Живёт в кронах всю жизнь: мир круглых крон, полный и завершённый. Calvino написал о свободе как о выборе своего круга. 6 букв, итальянское, аристократичное.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 03 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 03</span><img src="frame-03.png" alt="Frame 03"></div>
+    <div class="frame-info">
+      <h3>Semi-Rimless Gold Polygon</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Золотой полигон, ювелирный. Литература <strong style="color:var(--text)">эфемерная, драгоценная, бесконечная</strong>.</p>
+      <div class="frame-tags"><span class="tag">gold</span><span class="tag">polygon</span><span class="tag">infinite</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Литература</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="03" data-name="Aleph">
+        <div class="name-card-top"><span class="name">Aleph</span><span class="source-tag">Jorge Luis Borges, 1945</span></div>
+        <div class="backstory"><strong>«Алеф»</strong> — точка в подвале, содержащая все точки вселенной одновременно. Borges увидел всё: каждый песок, каждую звезду, каждое лицо — в одном сияющем полигоне. Первая буква еврейского алфавита, символ бесконечности. Эта оправа — тот Алеф: золотой многогранник, вмещающий мир. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="03" data-name="Sputnik">
+        <div class="name-card-top"><span class="name">Sputnik</span><span class="source-tag">Haruki Murakami, 1999</span></div>
+        <div class="backstory"><strong>«Sputnik Sweetheart»</strong> — золотой спутник на орбите одиночества. Murakami: два человека, которые любят друг друга, но не в той вселенной. Спутник = тот, кто рядом, но не может приблизиться. Золотая оправа на орбите лица. 7 букв, русское слово, ставшее мировым.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="03" data-name="Ondine">
+        <div class="name-card-top"><span class="name">Ondine</span><span class="source-tag">Fouqu&eacute; / Giraudoux</span></div>
+        <div class="backstory"><strong>«Ундина»</strong> — водяной дух, обретающий душу через любовь. От Fouqu&eacute; (1811) до Giraudoux (1939) — один из вечных сюжетов. Золотое мерцание на воде, эфемерность формы, которая вот-вот растворится. Эта полуободковая оправа — Ondine: не совсем здесь, не совсем там. 6 букв, французское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 04 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 04</span><img src="frame-04.png" alt="Frame 04"></div>
+    <div class="frame-info">
+      <h3>Browline — Titanium + Acetate</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Интеллект + дерзость. Литература <strong style="color:var(--text)">интеллектуальная, наблюдательная, философская</strong>.</p>
+      <div class="frame-tags"><span class="tag">intellectual</span><span class="tag">observer</span><span class="tag">layered truth</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Литература</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="04" data-name="Kafka">
+        <div class="name-card-top"><span class="name">Kafka</span><span class="source-tag">Franz Kafka / Murakami</span></div>
+        <div class="backstory"><strong>Kafka</strong> — двойная жизнь: Franz Kafka, «Превращение» — проснуться другим. Murakami, «Kafka на пляже» — 15-летний беглец. Kafka = «галка» на чешском. Интеллектуальная тяжесть, абсурд как метод познания. Browline: ацетат (маска) поверх титана (абсурд). 5 букв, мгновенно узнаваемое.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Sensei">
+        <div class="name-card-top"><span class="name">Sensei</span><span class="source-tag">Natsume Soseki, 1914</span></div>
+        <div class="backstory"><strong>«Sensei» (先生)</strong> — центральный персонаж «Kokoro». Учитель, несущий тайну. Тяжёлая бровь мудрости и вины. Browline — оправа учителя: внушительный лоб, вес знания. «Sensei» как слово — уважение, дистанция, глубина. 6 букв, японское, узнаваемое вне аниме-контекста.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Palomar">
+        <div class="name-card-top"><span class="name">Palomar</span><span class="source-tag">Italo Calvino, 1983</span></div>
+        <div class="backstory"><strong>«Мистер Паломар»</strong> — человек, который пытается понять мир, наблюдая. Волна, сыр, звёзды — всё требует интеллектуального усилия. Calvino сделал browline-книгу: тяжёлый взгляд наблюдателя. Palomar = обсерватория, телескоп, 200 дюймов линзы. 7 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Stoner">
+        <div class="name-card-top"><span class="name">Stoner</span><span class="source-tag">John Williams, 1965</span></div>
+        <div class="backstory"><strong>«Стоунер»</strong> — тихий профессор литературы, непонятый при жизни. Роман, забытый на 50 лет и ставший культовым в 2010-х. Browline-книга par excellence: интеллект без блеска, глубина без позы. Ацетат (обыденность) поверх титана (достоинство). 6 букв, фамилия как судьба.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 05 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 05</span><img src="frame-05.png" alt="Frame 05"></div>
+    <div class="frame-info">
+      <h3>Wide Rectangular Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Широкий, масштабный. Литература <strong style="color:var(--text)">эпическая, океаническая, бескрайняя</strong>.</p>
+      <div class="frame-tags"><span class="tag">wide</span><span class="tag">massive</span><span class="tag">epic</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Литература</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="05" data-name="Dune">
+        <div class="name-card-top"><span class="name">Dune</span><span class="source-tag">Frank Herbert, 1965</span></div>
+        <div class="backstory"><strong>«Дюна»</strong> — пустыня от горизонта до горизонта. Империя, специя, черви. Herbert создал самый широкий мир в sci-fi: политика, экология, религия, война — всё в одной книге. Эта оправа — песчаная буря Arrakis: прямоугольная, бескомпромиссная, масштабная. 4 буквы = бесконечность.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Solaris">
+        <div class="name-card-top"><span class="name">Solaris</span><span class="source-tag">Stanis&lstrok;aw Lem, 1961</span></div>
+        <div class="backstory"><strong>«Солярис»</strong> — океан-планета, который мыслит. Lem написал о масштабе непонимания: мы не можем познать Другое, даже если оно — целая планета. Океан шире любого горизонта. Эта оправа — станция над Солярисом: широкая, смотрящая в непостижимое. 6 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Ahab">
+        <div class="name-card-top"><span class="name">Ahab</span><span class="source-tag">Herman Melville, 1851</span></div>
+        <div class="backstory"><strong>Капитан Ахав</strong> — одержимый, широкий как океан, одноногий на палубе Пекода. «Моби Дик» — самый масштабный роман о масштабе: кит как бог, океан как бесконечность, человек как точка. Эта оправа — Ahab на мостике: прямоугольная, командная, неумолимая. 4 буквы, библейское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 06 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 06</span><img src="frame-06.png" alt="Frame 06"></div>
+    <div class="frame-info">
+      <h3>Soft Geometric Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Мягкая геометрия, баланс. Литература <strong style="color:var(--text)">тихая, созерцательная, хайку-природа</strong>.</p>
+      <div class="frame-tags"><span class="tag">soft</span><span class="tag">haiku</span><span class="tag">contemplative</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Литература</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="06" data-name="Basho">
+        <div class="name-card-top"><span class="name">Basho</span><span class="source-tag">Matsuo Bash&#333;, 1644—1694</span></div>
+        <div class="backstory"><strong>Мацуо Басё</strong> — отец хайку. 5-7-5 слогов — мягкая геометрия: «Старый пруд. Лягушка прыгнула. Всплеск воды.» Структура + тишина + природа. Странствующий поэт, шёл по Японии и записывал. Эта оправа — его хайку: мягкие линии, точная форма, тихая красота. 5 букв, японское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="06" data-name="Naomi">
+        <div class="name-card-top"><span class="name">Naomi</span><span class="source-tag">Jun'ichir&#333; Tanizaki, 1924</span></div>
+        <div class="backstory"><strong>«Любовь глупца» (痴人の愛)</strong> — мужчина одержим красотой Naomi, девушки-западницы. Tanizaki написал о мягкой одержимости: не агрессия, а растворение в красоте другого. Мягкая геометрия — форма, к которой возвращаешься. 5 букв, японское и международное.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="06" data-name="Momo">
+        <div class="name-card-top"><span class="name">Momo</span><span class="source-tag">Michael Ende, 1973</span></div>
+        <div class="backstory"><strong>«Момо»</strong> — девочка, которая умеет слушать. Серые господа крадут время у людей, а Momo возвращает его обратно. Ende написал о тихой силе: не действие, а присутствие. Мягкая, круглая, сильная без насилия. 4 буквы, два одинаковых слога — мягкая геометрия звука.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 07 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 07</span><img src="frame-07.png" alt="Frame 07"></div>
+    <div class="frame-info">
+      <h3>Oval — Acetate + Titanium Layered</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Два слоя, два материала. Литература о <strong style="color:var(--text)">слоях реальности, метафикции, бесконечных залах</strong>.</p>
+      <div class="frame-tags"><span class="tag">layered</span><span class="tag">metafiction</span><span class="tag">identity</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Литература</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="07" data-name="Piranesi">
+        <div class="name-card-top"><span class="name">Piranesi</span><span class="source-tag">Susanna Clarke, 2020</span></div>
+        <div class="backstory"><strong>«Пиранези»</strong> — бесконечный Дом из залов, статуй и приливов. Кто его построил? Кто живёт в нём? Clarke написала книгу-матрёшку: каждый слой открывает новый Дом. Имя — от Giovanni Battista Piranesi, гравёра невозможных тюрем. Ацетат (стены) поверх титана (море). 8 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Tsukuru">
+        <div class="name-card-top"><span class="name">Tsukuru</span><span class="source-tag">Haruki Murakami, 2013</span></div>
+        <div class="backstory"><strong>«Бесцветный Цукуру Тадзаки и годы его странствий»</strong> — пять друзей, у каждого цвет в имени, кроме Tsukuru. Murakami о слоях идентичности: кто ты, если у тебя нет цвета? Каждый слой раскопок — новая правда о дружбе. 7 букв, японское, означает «создавать» (作る).</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Calvino">
+        <div class="name-card-top"><span class="name">Calvino</span><span class="source-tag">Italo Calvino</span></div>
+        <div class="backstory"><strong>Italo Calvino</strong> — «Если однажды зимней ночью путник»: книга о чтении книг, роман, вложенный в роман. THE литературные слои. «Невидимые города»: каждый город — слой одного города. Calvino = литература о литературе. Два материала оправы = два уровня текста. 7 букв, итальянское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Macondo">
+        <div class="name-card-top"><span class="name">Macondo</span><span class="source-tag">Gabriel Garc&iacute;a M&aacute;rquez, 1967</span></div>
+        <div class="backstory"><strong>Макондо</strong> — город из «100 лет одиночества». Слои времени: семь поколений Буэндиа, каждое повторяет предыдущее, но иначе. M&aacute;rquez — магический реализм = реальность, вложенная в миф, вложенный в реальность. Ацетат (миф) поверх титана (факт). 7 букв, латиноамериканское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 08 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 08</span><img src="frame-08.png" alt="Frame 08"></div>
+    <div class="frame-info">
+      <h3>Navigator — Double Bridge</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Навигатор, двойной мост. Литература о <strong style="color:var(--text)">путешествиях, исследованиях, курсе через неизвестность</strong>.</p>
+      <div class="frame-tags"><span class="tag">navigator</span><span class="tag">explorer</span><span class="tag">odyssey</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Литература</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="08" data-name="Nemo">
+        <div class="name-card-top"><span class="name">Nemo</span><span class="source-tag">Jules Verne, 1870</span></div>
+        <div class="backstory"><strong>Капитан Немо</strong> — «20 000 лье под водой». Навигатор-одиночка на «Наутилусе», сбежавший от цивилизации на дно океана. «Nemo» = «никто» на латыни. Двойной мост оправы = перископ Наутилуса: два глаза смотрят в неизведанное. 4 буквы, латынь, универсально.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="08" data-name="Verne">
+        <div class="name-card-top"><span class="name">Verne</span><span class="source-tag">Jules Verne, 1828—1905</span></div>
+        <div class="backstory"><strong>Jules Verne</strong> — все его книги — навигация: под водой, на воздушном шаре, к центру Земли, на Луну, вокруг света за 80 дней. Отец sci-fi, предсказавший подводные лодки, вертолёты, телевидение. Verne = навигатор воображения. 5 букв, французское, классическое.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="08" data-name="Ishmael">
+        <div class="name-card-top"><span class="name">Ishmael</span><span class="source-tag">Herman Melville, 1851</span></div>
+        <div class="backstory"><strong>«Call me Ishmael.»</strong> — первая фраза «Моби Дика», одна из самых знаменитых в литературе. Ishmael — рассказчик, матрос-навигатор, единственный выживший. Библейский изгнанник, нашедший дом в море. Двойной мост = его взгляд: одним глазом на кита, другим на горизонт. 7 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 09 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 09</span><img src="frame-09.png" alt="Frame 09"></div>
+    <div class="frame-info">
+      <h3>Gold Butterfly Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Золотой butterfly. Поэзия и проза о <strong style="color:var(--text)">женской силе, золотых стихах, архитектуре чувств</strong>.</p>
+      <div class="frame-tags"><span class="tag">gold</span><span class="tag">poetry</span><span class="tag">feminine</span><span class="tag">eternal</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Литература</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="09" data-name="Neruda">
+        <div class="name-card-top"><span class="name">Neruda</span><span class="source-tag">Pablo Neruda, 1904—1973</span></div>
+        <div class="backstory"><strong>Pablo Neruda</strong> — «20 стихотворений о любви и одна песня отчаяния». Нобелевский лауреат, чьи стихи — золотые: «Мне нравится, когда ты молчишь, потому что ты как бы отсутствуешь». Чилийское золото, тёплое как butterfly. Поэзия, которую читают вслух ночью. 6 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="09" data-name="Sappho">
+        <div class="name-card-top"><span class="name">Sappho</span><span class="source-tag">~630—570 BC, Lesbos</span></div>
+        <div class="backstory"><strong>Сапфо</strong> — первый голос женской поэзии. С острова Лесбос, VII век до н.э. До нас дошли фрагменты — золотые осколки: «Кто прекрасен — прекрасен лишь на вид; кто же добр — и прекрасен будет.» Butterfly = те фрагменты: неполные крылья, но всё равно летят. 6 букв, греческое, вечное.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="09" data-name="Austen">
+        <div class="name-card-top"><span class="name">Austen</span><span class="source-tag">Jane Austen, 1775—1817</span></div>
+        <div class="backstory"><strong>Jane Austen</strong> — золотой ум, женское начало, архитектура чувств. «Гордость и предубеждение», «Разум и чувства» — каждый роман = точная конструкция, где каждое слово на месте. Butterfly: элегантность, которая кажется лёгкой, но выстроена как собор. 6 букв, английское, узнаваемое.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>PYE OPTICS · LITERATURE EDITION · 30 BOOKS &amp; AUTHORS · FEBRUARY 2026</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'pye-books-votes';
+function getVotes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } }
+function saveVotes(v) { localStorage.setItem(STORAGE_KEY, JSON.stringify(v)); }
+function getVoterName() { return document.getElementById('voterName').value.trim() || 'Anonymous'; }
+
+function vote(btn, type) {
+  const card = btn.closest('.name-card');
+  const key = card.dataset.frame + '::' + card.dataset.name;
+  const votes = getVotes();
+  const voter = getVoterName();
+  if (!votes[key]) votes[key] = {};
+  if (votes[key][voter] === type) { delete votes[key][voter]; card.removeAttribute('data-my-vote'); }
+  else { votes[key][voter] = type; card.setAttribute('data-my-vote', type); }
+  saveVotes(votes); renderVotes();
+}
+
+function renderVotes() {
+  const votes = getVotes(); const voter = getVoterName();
+  let totalYes = 0, totalNo = 0;
+  document.querySelectorAll('.name-card').forEach(card => {
+    const key = card.dataset.frame + '::' + card.dataset.name;
+    const nv = votes[key] || {}; const mv = nv[voter];
+    if (mv) card.setAttribute('data-my-vote', mv); else card.removeAttribute('data-my-vote');
+    const c = { yes: 0, maybe: 0, no: 0 };
+    Object.values(nv).forEach(v => { if (c[v] !== undefined) c[v]++; });
+    card.querySelectorAll('.vote-btn').forEach(btn => {
+      const t = btn.classList.contains('yes') ? 'yes' : btn.classList.contains('no') ? 'no' : 'maybe';
+      btn.classList.toggle('active', mv === t);
+      const ex = btn.querySelector('.count'); if (ex) ex.remove();
+      if (c[t] > 0) { const b = document.createElement('span'); b.className='count'; b.textContent=c[t]; btn.appendChild(b); }
+    });
+    if (mv==='yes') totalYes++; if (mv==='no') totalNo++;
+  });
+  document.getElementById('statYes').textContent = totalYes;
+  document.getElementById('statNo').textContent = totalNo;
+}
+
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+
+function exportResults() {
+  const votes = getVotes(); const lines = ['PYE Titanium — Literature Edition Results\n'];
+  let cf = '';
+  document.querySelectorAll('.name-card').forEach(card => {
+    const f = 'Frame ' + card.dataset.frame;
+    if (f !== cf) { cf = f; lines.push('\n' + f + ':'); }
+    const key = card.dataset.frame + '::' + card.dataset.name;
+    const nv = votes[key] || {};
+    const y=[], n=[], m=[];
+    Object.entries(nv).forEach(([v,t])=>{ if(t==='yes')y.push(v); if(t==='no')n.push(v); if(t==='maybe')m.push(v); });
+    let s = '  ' + card.dataset.name;
+    const p = [];
+    if (y.length) p.push('👍 '+y.join(', ')); if (m.length) p.push('🤔 '+m.join(', ')); if (n.length) p.push('👎 '+n.join(', '));
+    if (p.length) s += ' — ' + p.join(' | ');
+    lines.push(s);
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>showToast('Результаты скопированы!'));
+}
+
+function clearVotes() {
+  if (!confirm('Сбросить все голоса?')) return;
+  const votes = getVotes(); const voter = getVoterName();
+  Object.keys(votes).forEach(k => { delete votes[k][voter]; });
+  saveVotes(votes); renderVotes(); showToast('Голоса сброшены');
+}
+
+const sn = localStorage.getItem('pye-naming-voter');
+if (sn) document.getElementById('voterName').value = sn;
+document.getElementById('voterName').addEventListener('input', function() {
+  localStorage.setItem('pye-naming-voter', this.value); renderVotes();
+});
+renderVotes();
+</script>
+</body>
+</html>
