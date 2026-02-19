@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYE Titanium — Wave 4b Naming</title>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --surface-hover: #222;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --accent: #fb923c;
+    --accent-dim: rgba(251, 146, 60, 0.12);
+    --green: #4ade80;
+    --green-dim: rgba(74, 222, 128, 0.12);
+    --red: #f87171;
+    --red-dim: rgba(248, 113, 113, 0.10);
+    --yellow: #fbbf24;
+    --yellow-dim: rgba(251, 191, 36, 0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif; line-height: 1.6; padding: 40px 20px; min-height: 100vh; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 60px; }
+  header h1 { font-size: 13px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  header h2 { font-size: 36px; font-weight: 300; letter-spacing: -0.5px; }
+  header .subtitle { font-size: 14px; color: var(--text-muted); margin-top: 8px; max-width: 640px; margin-left: auto; margin-right: auto; }
+  .voter-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; }
+  .voter-bar label { font-size: 13px; color: var(--text-muted); }
+  .voter-bar input { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; color: var(--text); font-size: 14px; width: 180px; outline: none; }
+  .voter-bar input:focus { border-color: var(--accent); }
+  .stats { display: flex; justify-content: center; gap: 40px; margin-top: 24px; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 300; }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-top: 2px; }
+  .export-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; }
+  .export-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 24px; color: var(--text); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .export-btn:hover { background: var(--surface-hover); border-color: #444; }
+  .export-btn.accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .culture-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+  .culture-nav a { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; transition: all 0.15s; }
+  .culture-nav a:hover { border-color: #444; color: var(--text); }
+  .culture-nav a.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .frame-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 40px; overflow: hidden; }
+  .frame-header { display: flex; align-items: stretch; min-height: 280px; }
+  .frame-image { width: 360px; min-width: 360px; display: flex; align-items: center; justify-content: center; padding: 28px; background: #fff; position: relative; }
+  .frame-image img { max-width: 100%; max-height: 220px; object-fit: contain; }
+  .frame-number { position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #999; text-transform: uppercase; }
+  .frame-info { flex: 1; padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+  .frame-info h3 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .frame-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .tag { font-size: 11px; padding: 4px 12px; border-radius: 100px; background: var(--accent-dim); color: var(--accent); letter-spacing: 0.5px; }
+  .domain-tag { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; }
+  .domain-tag.skate { background: rgba(74, 222, 128, 0.12); color: #4ade80; }
+  .domain-tag.dance { background: rgba(244, 114, 182, 0.12); color: #f472b6; }
+  .domain-tag.gastro { background: rgba(251, 146, 60, 0.12); color: #fb923c; }
+  .domain-tag.astro { background: rgba(129, 140, 248, 0.12); color: #818cf8; }
+  .domain-tag.scifi { background: rgba(45, 212, 191, 0.12); color: #2dd4bf; }
+  .names-section { padding: 0 28px 28px; }
+  .names-section h4 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .names-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .name-card { padding: 18px; border-radius: 12px; border: 1px solid var(--border); transition: all 0.15s; }
+  .name-card:hover { border-color: #444; background: var(--surface-hover); }
+  .name-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .name-card .name { font-size: 22px; font-weight: 400; letter-spacing: 0.5px; }
+  .name-card .backstory { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .name-card .backstory strong { color: var(--text); font-weight: 500; }
+  .name-card .vote-row { display: flex; gap: 4px; margin-top: 10px; }
+  .vote-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.15s; position: relative; color: #666; }
+  .vote-btn:hover { border-color: #444; background: var(--surface-hover); }
+  .vote-btn.yes:hover, .vote-btn.yes.active { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.3); color: var(--green); }
+  .vote-btn.no:hover, .vote-btn.no.active { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.25); color: var(--red); }
+  .vote-btn.maybe:hover, .vote-btn.maybe.active { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.25); color: var(--yellow); }
+  .vote-btn .count { position: absolute; top: -6px; right: -6px; font-size: 9px; font-weight: 600; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; line-height: 1; }
+  .vote-btn.yes .count { background: var(--green); color: #000; }
+  .vote-btn.no .count { background: var(--red); color: #fff; }
+  .vote-btn.maybe .count { background: var(--yellow); color: #000; }
+  .name-card[data-my-vote="yes"] { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.15); }
+  .name-card[data-my-vote="no"] { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.1); opacity: 0.45; }
+  .name-card[data-my-vote="no"] .name { text-decoration: line-through; }
+  .name-card[data-my-vote="maybe"] { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.1); }
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 12px 24px; border-radius: 10px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
+  .toast.show { opacity: 1; }
+  footer { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 12px; letter-spacing: 1px; }
+  @media (max-width: 900px) {
+    .frame-header { flex-direction: column; }
+    .frame-image { width: 100%; min-width: 0; min-height: 200px; }
+    header h2 { font-size: 28px; }
+    .stats { gap: 20px; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav class="culture-nav">
+  <a href="index.html">Основной (Wave 3)</a>
+  <a href="anime.html">Аниме</a>
+  <a href="cinema.html">Азиатское кино</a>
+  <a href="books.html">Литература</a>
+  <a href="wave4.html">Wave 4a</a>
+  <a href="wave4b.html" class="active">Wave 4b</a>
+</nav>
+
+<header>
+  <h1>PYE Optics</h1>
+  <h2>Titanium Collection — Wave 4b</h2>
+  <p class="subtitle">54 названия из 5 доменов: <strong style="color:#4ade80">скейт / граффити</strong>, <strong style="color:#f472b6">танцы</strong>, <strong style="color:#fb923c">гастрономия</strong>, <strong style="color:#818cf8">астрономия</strong>, <strong style="color:#2dd4bf">ретрофутуризм</strong>.</p>
+  <div class="voter-bar">
+    <label>Твоё имя:</label>
+    <input type="text" id="voterName" placeholder="Введи имя..." autocomplete="off">
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-value">9</div><div class="stat-label">Моделей</div></div>
+    <div class="stat"><div class="stat-value">54</div><div class="stat-label">Названий</div></div>
+    <div class="stat"><div class="stat-value green" id="statYes">0</div><div class="stat-label">👍 Да</div></div>
+    <div class="stat"><div class="stat-value red" id="statNo">0</div><div class="stat-label">👎 Нет</div></div>
+  </div>
+</header>
+
+<div class="export-bar">
+  <button class="export-btn accent" onclick="exportResults()">Скопировать результаты</button>
+  <button class="export-btn" onclick="clearVotes()">Сбросить голоса</button>
+</div>
+
+<!-- ======================== FRAME 01 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 01</span><img src="frame-01.png" alt="Frame 01"></div>
+    <div class="frame-info">
+      <h3>Geometric Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Угловатая геометрия, точные линии, титан.</p>
+      <div class="frame-tags"><span class="tag">angular</span><span class="tag">precise</span><span class="tag">minimal</span></div>
+    </div>
+  </div>
+  <div class="names-section"><h4>Wave 4b</h4><div class="names-grid">
+    <div class="name-card" data-frame="01" data-name="Ollie"><div class="name-card-top"><span class="name">Ollie</span><span class="domain-tag skate">скейт</span></div><div class="backstory"><strong>Ollie</strong> — базовый прыжок, с которого начинается всё в скейтбординге. Доска взлетает под точным углом без помощи рук. Изобрёл Alan «Ollie» Gelfand в 1978. Угловатая траектория взлёта. 5 букв, дружелюбное звучание.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="01" data-name="Butoh"><div class="name-card-top"><span class="name">Butoh</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>舞踏</strong> — японский танец тьмы. Угловатые, замедленные, невозможные позы. Hijikata Tatsumi, 1959. Анти-красота: тело как скульптура из ломаных линий. Самый авангардный танец на планете. 5 букв, японское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="01" data-name="Wasabi"><div class="name-card-top"><span class="name">Wasabi</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Wasabi</strong> — острота, которая бьёт не в язык, а в нос. Точечный, геометрический удар: мгновенно приходит, мгновенно уходит. Настоящий wasabi — свежетёртый корень, а не порошок. Резкая красота. 6 букв, японское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="01" data-name="Quasar"><div class="name-card-top"><span class="name">Quasar</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Quasar</strong> — квазизвёздный объект: ярчайшая точка во вселенной, энергия целой галактики, сжатая в ядро. Миллиарды световых лет отсюда, но виден как точка. Угловая энергия из одной точки. 6 букв, QU = необычный старт.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="01" data-name="Nexus"><div class="name-card-top"><span class="name">Nexus</span><span class="domain-tag scifi">sci-fi</span></div><div class="backstory"><strong>Nexus-6</strong> — модель репликантов в Blade Runner. Точка соединения: лат. <em>nexus</em> = связь, узел. Геометрия связей. X внутри слова — визуальный крест, пересечение линий. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="01" data-name="Stencil"><div class="name-card-top"><span class="name">Stencil</span><span class="domain-tag skate">граффити</span></div><div class="backstory"><strong>Stencil</strong> — трафарет: Banksy, Blek le Rat, Shepard Fairey. Точные линии, вырезанные ножом в картоне. Уличная геометрия: один трафарет = тысячи одинаковых идеальных отпечатков. 7 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  </div></div>
+</div>
+
+<!-- ======================== FRAME 02 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 02</span><img src="frame-02.png" alt="Frame 02"></div>
+    <div class="frame-info">
+      <h3>Round Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Классический круг, полнота, винтаж.</p>
+      <div class="frame-tags"><span class="tag">round</span><span class="tag">warm</span><span class="tag">vintage</span></div>
+    </div>
+  </div>
+  <div class="names-section"><h4>Wave 4b</h4><div class="names-grid">
+    <div class="name-card" data-frame="02" data-name="Mochi"><div class="name-card-top"><span class="name">Mochi</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Mochi (餅)</strong> — рисовое тесто, идеально круглое, мягкое, тянучее. Японский Новый год: круглые mochi = полнота наступающего года. Тактильное, как эта оправа. 5 букв, три мягких звука.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="02" data-name="Waltz"><div class="name-card-top"><span class="name">Waltz</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Waltz</strong> — три четверти: раз-два-три, раз-два-три. Круговое движение по залу. Штраус, Вена, Золотой зал. Когда-то считался неприличным: слишком близко. 5 букв, немецкое, один вальсирующий слог.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="02" data-name="Pulsar"><div class="name-card-top"><span class="name">Pulsar</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Pulsar</strong> — вращающаяся нейтронная звезда, посылающая круговые импульсы. Обложка Joy Division «Unknown Pleasures» — визуализация сигнала пульсара CP 1919. Космический метроном. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="02" data-name="Retro"><div class="name-card-top"><span class="name">Retro</span><span class="domain-tag scifi">ретрофутуризм</span></div><div class="backstory"><strong>Retro</strong> — будущее, каким его видели в прошлом. Круглые формы 50-х, атомный оптимизм, Jetsons, Googie-архитектура. Не ностальгия — а вера в то, что будущее будет красивым. 5 букв, универсально.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="02" data-name="Vogue"><div class="name-card-top"><span class="name">Vogue</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Vogue</strong> — из Harlem ballroom culture 80-х: позирование как танец, журнальные позы как хореография. Madonna вынесла в мейнстрим, но корни — в квир-сообществе Нью-Йорка. Круглые позы, рамки. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="02" data-name="Tag"><div class="name-card-top"><span class="name">Tag</span><span class="domain-tag skate">граффити</span></div><div class="backstory"><strong>Tag</strong> — подпись райтера, базовая форма граффити. Круглые петли букв, личная печать на стене. Самый честный жест: «Я был здесь». 3 буквы — короче некуда, сильнее не нужно.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  </div></div>
+</div>
+
+<!-- ======================== FRAME 03 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 03</span><img src="frame-03.png" alt="Frame 03"></div>
+    <div class="frame-info">
+      <h3>Semi-Rimless Gold Polygon</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Золотой полигон, ювелирный, эфемерный.</p>
+      <div class="frame-tags"><span class="tag">gold</span><span class="tag">polygon</span><span class="tag">ethereal</span></div>
+    </div>
+  </div>
+  <div class="names-section"><h4>Wave 4b</h4><div class="names-grid">
+    <div class="name-card" data-frame="03" data-name="Yuzu"><div class="name-card-top"><span class="name">Yuzu</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Yuzu (柚子)</strong> — золотой японский цитрус: ароматнее лимона, реже апельсина. Нишевая кухня, нишевая парфюмерия (Le Labo Yuzu). Не экспортируется свежим — только для тех кто был в Японии. 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="03" data-name="Vega"><div class="name-card-top"><span class="name">Vega</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Vega</strong> — пятая по яркости звезда неба, золотисто-белая. Арабское <em>an-nasr al-wāqi</em> = «падающий орёл». В «Контакте» Сагана — источник сигнала. Также: Suzanne Vega. 4 буквы, два открытых слога.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="03" data-name="Jete"><div class="name-card-top"><span class="name">Jeté</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Grand jeté</strong> — прыжок, когда танцор парит в воздухе с разведёнными ногами. Золотой момент полёта: гравитация отпускает на секунду. Chris Marker, «La Jetée» (1962) — фильм из одних фотографий. 4 буквы, французское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="03" data-name="Neon"><div class="name-card-top"><span class="name">Neon</span><span class="domain-tag scifi">ретрофутуризм</span></div><div class="backstory"><strong>Neon</strong> — золотой неон Гонконга, Токио, Blade Runner. Благородный газ, светящийся при прохождении тока. Свет, которого больше не делают: LED убивает неон. Золотое свечение уходящей эпохи. 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="03" data-name="Tonka"><div class="name-card-top"><span class="name">Tonka</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Tonka</strong> — бобы тонка: тёплый, ванильно-золотой аромат с нотами миндаля и карамели. Запрещены в США за содержание кумарина. Нишевая парфюмерия: Guerlain Tonka Impériale. 5 букв, тропическое звучание.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="03" data-name="Thrash"><div class="name-card-top"><span class="name">Thrash</span><span class="domain-tag skate">скейт / музыка</span></div><div class="backstory"><strong>Thrash</strong> — скейт-стиль (agressive thrashing) + thrash metal (Slayer, Metallica ранние). Золотая энергия: быстро, громко, без компромиссов. Thrasher Magazine — библия скейтбординга. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  </div></div>
+</div>
+
+<!-- ======================== FRAME 04 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 04</span><img src="frame-04.png" alt="Frame 04"></div>
+    <div class="frame-info">
+      <h3>Browline — Titanium + Acetate</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Интеллект + дерзость, два материала.</p>
+      <div class="frame-tags"><span class="tag">intellectual</span><span class="tag">bold</span><span class="tag">dual nature</span></div>
+    </div>
+  </div>
+  <div class="names-section"><h4>Wave 4b</h4><div class="names-grid">
+    <div class="name-card" data-frame="04" data-name="Umami"><div class="name-card-top"><span class="name">Umami</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Umami (旨味)</strong> — пятый вкус, открытый Kikunae Ikeda в 1908. Не сладкий, не солёный, не кислый, не горький — глубже, скрытнее. Интеллектуальный вкус: ты его чувствуешь, но не можешь назвать. 5 букв, японское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="04" data-name="Tango"><div class="name-card-top"><span class="name">Tango</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Tango</strong> — два тела, одно движение. Буэнос-Айрес, портовые бары, Пьяццолла. Страсть + расчёт: каждый шаг — решение. Два материала browline как два партнёра: ацетат ведёт, титан следует. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="04" data-name="Nova"><div class="name-card-top"><span class="name">Nova</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Nova</strong> — вспышка: звезда, которая была тусклой, внезапно становится ярчайшей на небе. Не суперновая (та умирает), а nova — вспыхивает и продолжает жить. Латынь: «новая». 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="04" data-name="Synth"><div class="name-card-top"><span class="name">Synth</span><span class="domain-tag scifi">ретрофутуризм</span></div><div class="backstory"><strong>Synth</strong> — синтезатор: Kraftwerk, Depeche Mode, synthwave. Два мира в одном инструменте: аналоговый сигнал, цифровое управление. Browline = synth: органический ацетат + технологичный титан. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="04" data-name="Glitch"><div class="name-card-top"><span class="name">Glitch</span><span class="domain-tag scifi">ретрофутуризм</span></div><div class="backstory"><strong>Glitch</strong> — красивая ошибка. Glitch art, glitch hop (Flying Lotus), glitch в играх. Сбой как эстетика: идеальное + сломанное = интересное. Browline: классика (ацетат) + сбой (титан проступает). 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="04" data-name="Throw"><div class="name-card-top"><span class="name">Throw</span><span class="domain-tag skate">граффити</span></div><div class="backstory"><strong>Throw-up</strong> — быстрый граффити-тег в два цвета: контур + заливка. Дерзость browline: быстро, точно, два материала. Не masterpiece (долго), а throw — бросок, мгновенное решение. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  </div></div>
+</div>
+
+<!-- ======================== FRAME 05 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 05</span><img src="frame-05.png" alt="Frame 05"></div>
+    <div class="frame-info">
+      <h3>Wide Rectangular Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Широкий, архитектурный, масштабный.</p>
+      <div class="frame-tags"><span class="tag">wide</span><span class="tag">massive</span><span class="tag">architectural</span></div>
+    </div>
+  </div>
+  <div class="names-section"><h4>Wave 4b</h4><div class="names-grid">
+    <div class="name-card" data-frame="05" data-name="Miso"><div class="name-card-top"><span class="name">Miso</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Miso (味噌)</strong> — ферментированная соевая паста: глубокий, широкий, основательный вкус. Основа японской кухни — как фундамент здания. Месяцы ферментации = масштаб терпения. 4 буквы, японское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="05" data-name="Nebula"><div class="name-card-top"><span class="name">Nebula</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Nebula</strong> — облако газа и пыли, простирающееся на сотни световых лет. Масштаб, в котором рождаются звёзды. Орион, Крабовидная, Кольцевая. Латынь: «туман». 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="05" data-name="Chrome"><div class="name-card-top"><span class="name">Chrome</span><span class="domain-tag scifi">ретрофутуризм</span></div><div class="backstory"><strong>Chrome</strong> — хромированные бамперы 50-х, хромированные киборги 80-х, хромированные Furiosa. Широкий блеск металла, отражающего всё. Gibson: «the sky above the port was the color of television, tuned to a dead channel.» 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="05" data-name="Vert"><div class="name-card-top"><span class="name">Vert</span><span class="domain-tag skate">скейт</span></div><div class="backstory"><strong>Vert</strong> — vertical skating, масштаб рампы: 3+ метра вертикальной стены. Tony Hawk, 900. Также: «vert» = зелёный по-французски. Масштаб подъёма в 4 буквах.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="05" data-name="Stomp"><div class="name-card-top"><span class="name">Stomp</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Stomp</strong> — удар ногой о пол. STOMP — шоу, где ритм создаётся из мусорных баков, мётл, зажигалок. Масштабный бит из ничего. Широкий звук. 5 букв, один разрушительный слог.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="05" data-name="Zenith"><div class="name-card-top"><span class="name">Zenith</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Zenith</strong> — точка прямо над головой, вершина небесной сферы. Арабское <em>samt ar-ra's</em> = «путь над головой». Масштаб вертикали: выше зенита ничего нет. 6 букв, Z на старте = удар.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  </div></div>
+</div>
+
+<!-- ======================== FRAME 06 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 06</span><img src="frame-06.png" alt="Frame 06"></div>
+    <div class="frame-info">
+      <h3>Soft Geometric Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Мягкая геометрия, баланс, повседневность.</p>
+      <div class="frame-tags"><span class="tag">soft</span><span class="tag">balanced</span><span class="tag">quiet</span></div>
+    </div>
+  </div>
+  <div class="names-section"><h4>Wave 4b</h4><div class="names-grid">
+    <div class="name-card" data-frame="06" data-name="Tahini"><div class="name-card-top"><span class="name">Tahini</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Tahini</strong> — кунжутная паста: мягкая, кремовая, тёплая. Основа хумуса, халвы, ближневосточной кухни. Не кричит, а связывает всё остальное. Мягкая геометрия вкуса. 6 букв, средиземноморское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="06" data-name="Ponzu"><div class="name-card-top"><span class="name">Ponzu</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Ponzu (ポン酢)</strong> — японский цитрусовый соус: мягкий, кислый, сбалансированный. Соевый соус + юдзу + уксус. Баланс без усилий. 5 букв, японское, «pон» от голландского «pons» (пунш). Гибрид, как эта оправа.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="06" data-name="Apogee"><div class="name-card-top"><span class="name">Apogee</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Apogee</strong> — самая дальняя точка орбиты от Земли. Тихий пик: максимальное расстояние, минимальная скорость, момент паузы. Греческое <em>apo</em> (от) + <em>gaia</em> (земля). 6 букв, мягкое звучание.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="06" data-name="Ember"><div class="name-card-top"><span class="name">Ember</span><span class="domain-tag scifi">ретрофутуризм</span></div><div class="backstory"><strong>Ember</strong> — тлеющий уголёк: мягкий свет без пламени. «City of Ember» — город под землёй, питаемый угасающим генератором. Тепло без агрессии, свет без огня. 5 букв, EM + мягкое BER.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="06" data-name="Crew"><div class="name-card-top"><span class="name">Crew</span><span class="domain-tag skate">граффити</span></div><div class="backstory"><strong>Crew</strong> — команда граффити-райтеров: вместе, но каждый со своим стилем. Мягкая сила сообщества: не банда, а коллектив. Также: ship crew, film crew — те, кто делают невидимую работу. 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="06" data-name="Adagio"><div class="name-card-top"><span class="name">Adagio</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Adagio</strong> — медленная часть балета: максимальный контроль через плавность. Barber, Adagio for Strings. Итальянское: <em>ad agio</em> = «на досуге». Мягкая геометрия замедленного движения. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  </div></div>
+</div>
+
+<!-- ======================== FRAME 07 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 07</span><img src="frame-07.png" alt="Frame 07"></div>
+    <div class="frame-info">
+      <h3>Oval — Acetate + Titanium Layered</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Два слоя, два материала, скрытая глубина.</p>
+      <div class="frame-tags"><span class="tag">layered</span><span class="tag">dual</span><span class="tag">hidden depth</span></div>
+    </div>
+  </div>
+  <div class="names-section"><h4>Wave 4b</h4><div class="names-grid">
+    <div class="name-card" data-frame="07" data-name="Mole"><div class="name-card-top"><span class="name">Mole</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Mole</strong> — мексиканский соус из 20+ ингредиентов: шоколад, чили, орехи, специи, хлеб. Готовится сутки, каждый слой вкуса — отдельная история. THE слоистый вкус мировой кухни. 4 буквы, испанское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="07" data-name="Paso"><div class="name-card-top"><span class="name">Paso</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Paso</strong> — paso doble: два партнёра, два слоя — матадор и его плащ. Один ведёт, другой следует, но кто из них главный? Ацетат/титан как matador/capa. 4 буквы, испанское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="07" data-name="Pixel"><div class="name-card-top"><span class="name">Pixel</span><span class="domain-tag scifi">ретрофутуризм</span></div><div class="backstory"><strong>Pixel</strong> — минимальная единица изображения. Слои пикселей = экран. 8-bit эстетика: Minecraft, ранние Nintendo, vaporwave. Два материала оправы = два цветовых канала одного пикселя. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="07" data-name="Nadir"><div class="name-card-top"><span class="name">Nadir</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Nadir</strong> — точка прямо под ногами, антипод зенита. Скрытая глубина: то, что ниже поверхности. Арабское <em>naẓīr as-samt</em> = «напротив зенита». Слой, который не видно. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="07" data-name="Piece"><div class="name-card-top"><span class="name">Piece</span><span class="domain-tag skate">граффити</span></div><div class="backstory"><strong>Piece</strong> — masterpiece, полноценная граффити-работа: слои цвета, контуры, заливка, блики, фон. Часы работы, десятки баллонов. Ацетат = цвет, титан = структура под ним. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="07" data-name="Bolero"><div class="name-card-top"><span class="name">Bolero</span><span class="domain-tag dance">танец / музыка</span></div><div class="backstory"><strong>Bolero</strong> — Равель, 1928. Одна тема, 15 минут, 18 вариаций: слой за слоем за слоем нарастает от пианиссимо до фортиссимо. THE музыка о слоях. Также: испанский танец. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  </div></div>
+</div>
+
+<!-- ======================== FRAME 08 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 08</span><img src="frame-08.png" alt="Frame 08"></div>
+    <div class="frame-info">
+      <h3>Navigator — Double Bridge</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Навигатор, двойной мост, уверенность.</p>
+      <div class="frame-tags"><span class="tag">navigator</span><span class="tag">commanding</span><span class="tag">directional</span></div>
+    </div>
+  </div>
+  <div class="names-section"><h4>Wave 4b</h4><div class="names-grid">
+    <div class="name-card" data-frame="08" data-name="Curry"><div class="name-card-top"><span class="name">Curry</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Curry</strong> — маршрут специй через континенты: Индия → Британия → Япония → весь мир. Навигация вкуса через культуры. Японское карри ≠ индийское ≠ тайское — каждый пункт меняет рецепт. 5 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="08" data-name="Kepler"><div class="name-card-top"><span class="name">Kepler</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Kepler</strong> — три закона движения планет: навигация через космос вычислена в 1619. Телескоп Kepler открыл 2 600+ экзопланет. Немецкий учёный, изменивший понимание орбит. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="08" data-name="Atari"><div class="name-card-top"><span class="name">Atari</span><span class="domain-tag scifi">ретрофутуризм</span></div><div class="backstory"><strong>Atari (当たり)</strong> — японское «попадание в цель». Pong, 1972 — первая навигация через экран. Пионеры видеоигр, логотип-фудзияма. Навигация к победе через пиксели. 5 букв, японское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="08" data-name="Grind"><div class="name-card-top"><span class="name">Grind</span><span class="domain-tag skate">скейт</span></div><div class="backstory"><strong>Grind</strong> — скольжение по грани перил или бордюра. Навигация по тонкой линии: баланс, скорость, точность. Также: daily grind — ежедневный путь. 5 букв, GR = тяжёлый старт, ND = мягкий финиш.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="08" data-name="Salsa"><div class="name-card-top"><span class="name">Salsa</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Salsa</strong> — навигация двух тел через музыку: Куба → Нью-Йорк → весь мир. Ведущий направляет, ведомый интерпретирует. Также: salsa = соус (гастрономический бонус). 5 букв, два открытых слога.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="08" data-name="Flare"><div class="name-card-top"><span class="name">Flare</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Flare</strong> — солнечная вспышка / сигнальная ракета. То, что указывает путь или предупреждает об опасности. Также: lens flare — оптический артефакт, любимый Абрамсом. 5 букв, FL = полёт.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  </div></div>
+</div>
+
+<!-- ======================== FRAME 09 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 09</span><img src="frame-09.png" alt="Frame 09"></div>
+    <div class="frame-info">
+      <h3>Gold Butterfly Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Золотой butterfly, женственный, тёплый.</p>
+      <div class="frame-tags"><span class="tag">gold</span><span class="tag">butterfly</span><span class="tag">feminine</span><span class="tag">warm</span></div>
+    </div>
+  </div>
+  <div class="names-section"><h4>Wave 4b</h4><div class="names-grid">
+    <div class="name-card" data-frame="09" data-name="Neroli"><div class="name-card-top"><span class="name">Neroli</span><span class="domain-tag gastro">гастрономия</span></div><div class="backstory"><strong>Neroli</strong> — эфирное масло из цветов горького апельсина. Золотое, цветочное, дорогое. Названо в честь принцессы Nerola, душившей им перчатки. Нишевая парфюмерия: Tom Ford Neroli Portofino. 6 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="09" data-name="Lyra"><div class="name-card-top"><span class="name">Lyra</span><span class="domain-tag astro">астрономия</span></div><div class="backstory"><strong>Lyra</strong> — созвездие Лиры, содержащее Вегу. Орфей играл на лире так красиво, что камни плакали. Также: Lyra Belacqua из «Тёмных начал» Pullman. Женственное, золотое, музыкальное. 4 буквы.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="09" data-name="Tulle"><div class="name-card-top"><span class="name">Tulle</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Tulle</strong> — ткань балетной пачки: воздушная, многослойная, парящая. Названа в честь города Tulle во Франции. Крылья бабочки = слои тюля. Золотистый тюль в свете софитов. 5 букв, французское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="09" data-name="Flicker"><div class="name-card-top"><span class="name">Flicker</span><span class="domain-tag scifi">ретрофутуризм</span></div><div class="backstory"><strong>Flicker</strong> — мерцание: старое кино (flicker rate), свеча на ветру, неон на грани. Бабочка мерцает крыльями — 10-12 взмахов в секунду. Золотое мерцание между «есть» и «нет». 7 букв.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="09" data-name="Pointe"><div class="name-card-top"><span class="name">Pointe</span><span class="domain-tag dance">танец</span></div><div class="backstory"><strong>Pointe</strong> — «на пуантах»: высшая форма балета, танец на кончиках пальцев. Золотая хрупкость, за которой — стальные мышцы. Butterfly на pointe: парит, но стоит на точке. 6 букв, французское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+    <div class="name-card" data-frame="09" data-name="Aura"><div class="name-card-top"><span class="name">Aura</span><span class="domain-tag skate">граффити / концепция</span></div><div class="backstory"><strong>Aura</strong> — свечение вокруг объекта. Walter Benjamin: «аура произведения искусства» — то, что делает оригинал уникальным. Золотое свечение бабочки. В граффити: аура = тонкая линия вокруг букв. 4 буквы, латинское.</div><div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div></div>
+  </div></div>
+</div>
+
+<footer>PYE OPTICS · WAVE 4B · СКЕЙТ · ТАНЦЫ · ГАСТРОНОМИЯ · АСТРОНОМИЯ · РЕТРОФУТУРИЗМ · FEBRUARY 2026</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'pye-wave4b-votes';
+function getVotes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } }
+function saveVotes(v) { localStorage.setItem(STORAGE_KEY, JSON.stringify(v)); }
+function getVoterName() { return document.getElementById('voterName').value.trim() || 'Anonymous'; }
+function vote(btn, type) {
+  const card = btn.closest('.name-card'); const key = card.dataset.frame + '::' + card.dataset.name;
+  const votes = getVotes(); const voter = getVoterName();
+  if (!votes[key]) votes[key] = {};
+  if (votes[key][voter] === type) { delete votes[key][voter]; card.removeAttribute('data-my-vote'); }
+  else { votes[key][voter] = type; card.setAttribute('data-my-vote', type); }
+  saveVotes(votes); renderVotes();
+}
+function renderVotes() {
+  const votes = getVotes(); const voter = getVoterName();
+  let totalYes = 0, totalNo = 0;
+  document.querySelectorAll('.name-card').forEach(card => {
+    const key = card.dataset.frame + '::' + card.dataset.name;
+    const nv = votes[key] || {}; const mv = nv[voter];
+    if (mv) card.setAttribute('data-my-vote', mv); else card.removeAttribute('data-my-vote');
+    const c = { yes: 0, maybe: 0, no: 0 };
+    Object.values(nv).forEach(v => { if (c[v] !== undefined) c[v]++; });
+    card.querySelectorAll('.vote-btn').forEach(btn => {
+      const t = btn.classList.contains('yes') ? 'yes' : btn.classList.contains('no') ? 'no' : 'maybe';
+      btn.classList.toggle('active', mv === t);
+      const ex = btn.querySelector('.count'); if (ex) ex.remove();
+      if (c[t] > 0) { const b = document.createElement('span'); b.className='count'; b.textContent=c[t]; btn.appendChild(b); }
+    });
+    if (mv==='yes') totalYes++; if (mv==='no') totalNo++;
+  });
+  document.getElementById('statYes').textContent = totalYes;
+  document.getElementById('statNo').textContent = totalNo;
+}
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+function exportResults() {
+  const votes = getVotes(); const lines = ['PYE Titanium — Wave 4b Results\n']; let cf = '';
+  document.querySelectorAll('.name-card').forEach(card => {
+    const f = 'Frame ' + card.dataset.frame; if (f !== cf) { cf = f; lines.push('\n' + f + ':'); }
+    const key = card.dataset.frame + '::' + card.dataset.name; const nv = votes[key] || {};
+    const y=[], n=[], m=[];
+    Object.entries(nv).forEach(([v,t])=>{ if(t==='yes')y.push(v); if(t==='no')n.push(v); if(t==='maybe')m.push(v); });
+    let s = '  ' + card.dataset.name; const p = [];
+    if (y.length) p.push('👍 '+y.join(', ')); if (m.length) p.push('🤔 '+m.join(', ')); if (n.length) p.push('👎 '+n.join(', '));
+    if (p.length) s += ' — ' + p.join(' | '); lines.push(s);
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>showToast('Результаты скопированы!'));
+}
+function clearVotes() {
+  if (!confirm('Сбросить все голоса?')) return;
+  const votes = getVotes(); const voter = getVoterName();
+  Object.keys(votes).forEach(k => { delete votes[k][voter]; });
+  saveVotes(votes); renderVotes(); showToast('Голоса сброшены');
+}
+const sn = localStorage.getItem('pye-naming-voter');
+if (sn) document.getElementById('voterName').value = sn;
+document.getElementById('voterName').addEventListener('input', function() {
+  localStorage.setItem('pye-naming-voter', this.value); renderVotes();
+});
+renderVotes();
+</script>
+</body>
+</html>
