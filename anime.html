@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYE Titanium — Anime Characters Naming</title>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --surface-hover: #222;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --text-dim: #555;
+    --accent: #f472b6;
+    --accent-dim: rgba(244, 114, 182, 0.12);
+    --green: #4ade80;
+    --green-dim: rgba(74, 222, 128, 0.12);
+    --red: #f87171;
+    --red-dim: rgba(248, 113, 113, 0.10);
+    --yellow: #fbbf24;
+    --yellow-dim: rgba(251, 191, 36, 0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
+    line-height: 1.6; padding: 40px 20px; min-height: 100vh;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 60px; }
+  header h1 { font-size: 13px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  header h2 { font-size: 36px; font-weight: 300; letter-spacing: -0.5px; }
+  header .subtitle { font-size: 14px; color: var(--text-muted); margin-top: 8px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .voter-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; }
+  .voter-bar label { font-size: 13px; color: var(--text-muted); }
+  .voter-bar input { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; color: var(--text); font-size: 14px; width: 180px; outline: none; }
+  .voter-bar input:focus { border-color: var(--accent); }
+  .stats { display: flex; justify-content: center; gap: 40px; margin-top: 24px; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 300; }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-top: 2px; }
+  .export-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; }
+  .export-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 24px; color: var(--text); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .export-btn:hover { background: var(--surface-hover); border-color: #444; }
+  .export-btn.accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .back-link { display: inline-block; margin-bottom: 30px; color: var(--accent); text-decoration: none; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+  .back-link:hover { text-decoration: underline; }
+
+  .frame-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 40px; overflow: hidden; }
+  .frame-header { display: flex; align-items: stretch; min-height: 280px; }
+  .frame-image { width: 360px; min-width: 360px; display: flex; align-items: center; justify-content: center; padding: 28px; background: #fff; position: relative; }
+  .frame-image img { max-width: 100%; max-height: 220px; object-fit: contain; }
+  .frame-number { position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #999; text-transform: uppercase; }
+  .frame-info { flex: 1; padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+  .frame-info h3 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .frame-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .tag { font-size: 11px; padding: 4px 12px; border-radius: 100px; background: var(--accent-dim); color: var(--accent); letter-spacing: 0.5px; }
+
+  .names-section { padding: 0 28px 28px; }
+  .names-section h4 { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .names-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+
+  .name-card { padding: 18px; border-radius: 12px; border: 1px solid var(--border); transition: all 0.15s; }
+  .name-card:hover { border-color: #444; background: var(--surface-hover); }
+  .name-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .name-card .name { font-size: 22px; font-weight: 400; letter-spacing: 0.5px; }
+  .name-card .source-tag { font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; background: var(--accent-dim); color: var(--accent); }
+  .name-card .backstory { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .name-card .backstory strong { color: var(--text); font-weight: 500; }
+  .name-card .vote-row { display: flex; gap: 4px; margin-top: 10px; }
+  .vote-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.15s; position: relative; color: #666; }
+  .vote-btn:hover { border-color: #444; background: var(--surface-hover); }
+  .vote-btn.yes:hover, .vote-btn.yes.active { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.3); color: var(--green); }
+  .vote-btn.no:hover, .vote-btn.no.active { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.25); color: var(--red); }
+  .vote-btn.maybe:hover, .vote-btn.maybe.active { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.25); color: var(--yellow); }
+  .vote-btn .count { position: absolute; top: -6px; right: -6px; font-size: 9px; font-weight: 600; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; line-height: 1; }
+  .vote-btn.yes .count { background: var(--green); color: #000; }
+  .vote-btn.no .count { background: var(--red); color: #fff; }
+  .vote-btn.maybe .count { background: var(--yellow); color: #000; }
+  .name-card[data-my-vote="yes"] { background: var(--green-dim); border-color: rgba(74, 222, 128, 0.15); }
+  .name-card[data-my-vote="no"] { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.1); opacity: 0.45; }
+  .name-card[data-my-vote="no"] .name { text-decoration: line-through; }
+  .name-card[data-my-vote="maybe"] { background: var(--yellow-dim); border-color: rgba(251, 191, 36, 0.1); }
+
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 12px 24px; border-radius: 10px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
+  .toast.show { opacity: 1; }
+  footer { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 12px; letter-spacing: 1px; }
+
+  @media (max-width: 900px) {
+    .frame-header { flex-direction: column; }
+    .frame-image { width: 100%; min-width: 0; min-height: 200px; }
+    header h2 { font-size: 28px; }
+    .stats { gap: 20px; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="index.html" class="back-link">← Основной дашборд</a>
+
+<header>
+  <h1>PYE Optics</h1>
+  <h2>Titanium Collection — Anime Edition</h2>
+  <p class="subtitle">30 персонажей аниме (добрые / нейтральные), подобранные к 9 оправам по характеру, эстетике и духу.</p>
+  <div class="voter-bar">
+    <label>Твоё имя:</label>
+    <input type="text" id="voterName" placeholder="Введи имя..." autocomplete="off">
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-value">9</div><div class="stat-label">Моделей</div></div>
+    <div class="stat"><div class="stat-value">30</div><div class="stat-label">Персонажей</div></div>
+    <div class="stat"><div class="stat-value green" id="statYes">0</div><div class="stat-label">👍 Да</div></div>
+    <div class="stat"><div class="stat-value red" id="statNo">0</div><div class="stat-label">👎 Нет</div></div>
+  </div>
+</header>
+
+<div class="export-bar">
+  <button class="export-btn accent" onclick="exportResults()">Скопировать результаты</button>
+  <button class="export-btn" onclick="clearVotes()">Сбросить голоса</button>
+</div>
+
+<!-- ======================== FRAME 01 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 01</span><img src="frame-01.png" alt="Frame 01"></div>
+    <div class="frame-info">
+      <h3>Geometric Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Угловатая геометрия, точные линии, титан. Нужны персонажи с <strong style="color:var(--text)">точностью, остротой, расчётом</strong>.</p>
+      <div class="frame-tags"><span class="tag">angular</span><span class="tag">precise</span><span class="tag">minimal</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Персонажи</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="01" data-name="Spike">
+        <div class="name-card-top"><span class="name">Spike</span><span class="source-tag">Cowboy Bebop</span></div>
+        <div class="backstory"><strong>Spike Spiegel</strong> — каждое движение просчитано, каждый угол атаки геометрически точен. Джит Кун До + джаз = угловатая элегантность. Ленивая грация, скрывающая лезвие. Spike как имя — 5 букв, острый звук, взрывной финал. Эта оправа — его хореография боя, застывшая в титане.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Goemon">
+        <div class="name-card-top"><span class="name">Goemon</span><span class="source-tag">Lupin III</span></div>
+        <div class="backstory"><strong>Goemon Ishikawa XIII</strong> — мастер Zantetsuken, меча, разрезающего всё. «Вновь я разрезал ничтожную вещь». Минималист, аскет, каждый разрез — одна идеальная линия. Эта геометрическая оправа как один удар Goemon: чистый, угловатый, без лишнего. 6 букв, японское звучание — проверенный хит для PYE.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Genos">
+        <div class="name-card-top"><span class="name">Genos</span><span class="source-tag">One Punch Man</span></div>
+        <div class="backstory"><strong>Genos</strong> — киборг-ученик, буквально сделанный из титана. Геометрические пластины брони, точные инженерные грани. Добрый (по-настоящему предан Сайтаме), но выглядит как оружие. Эта оправа — лицо Genos: точные линии, металлический каркас, под которым — человек. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="01" data-name="Levi">
+        <div class="name-card-top"><span class="name">Levi</span><span class="source-tag">Attack on Titan</span></div>
+        <div class="backstory"><strong>Levi Ackerman</strong> — «сильнейший солдат человечества». Каждый его приём — геометрия: углы вращения, точки крепления, траектории клинков. Чистоплотен до абсурда — как эта оправа: ни одной лишней линии. 4 буквы, лаконично, как сам Levi. Средний палец вместо длинных речей.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 02 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 02</span><img src="frame-02.png" alt="Frame 02"></div>
+    <div class="frame-info">
+      <h3>Round Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Классический круг, полнота, винтаж. Нужны <strong style="color:var(--text)">тёплые, цельные, мудрые</strong> персонажи.</p>
+      <div class="frame-tags"><span class="tag">round</span><span class="tag">warm</span><span class="tag">vintage</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Персонажи</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="02" data-name="Totoro">
+        <div class="name-card-top"><span class="name">Totoro</span><span class="source-tag">My Neighbor Totoro</span></div>
+        <div class="backstory"><strong>Totoro</strong> — самый совершенно круглый персонаж в истории аниме. Дух леса: мягкий, огромный, добрый. Его живот — идеальная окружность. Ребёнок спит на нём, как на холме. Эта круглая оправа = Totoro: тёплая, защитная, завершённая форма. 6 букв, три мягких слога — округлость в звуке.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="02" data-name="Jiro">
+        <div class="name-card-top"><span class="name">Jiro</span><span class="source-tag">The Wind Rises</span></div>
+        <div class="backstory"><strong>Jiro Horikoshi</strong> — инженер, мечтающий о красивых кривых самолётов. Он сам НОСИТ круглые очки — культовый кадр Миядзаки. Добрый, творческий, одержимый совершенством формы. Эта оправа — очки Jiro: круги, через которые он видит изогнутые крылья будущего. 4 буквы, японское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="02" data-name="Porco">
+        <div class="name-card-top"><span class="name">Porco</span><span class="source-tag">Porco Rosso</span></div>
+        <div class="backstory"><strong>Porco Rosso</strong> — лётчик с круглым лицом, винтажной душой и моральным компасом. «Лучше быть свиньёй, чем фашистом». Адриатика, бипланы, закаты. Всё в нём круглое: лицо, очки, арки самолёта. Эта оправа — его мир: полный, тёплый, ностальгический. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 03 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 03</span><img src="frame-03.png" alt="Frame 03"></div>
+    <div class="frame-info">
+      <h3>Semi-Rimless Gold Polygon</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Золотой полигон, ювелирный. Нужны <strong style="color:var(--text)">сияющие, магические, драгоценные</strong> персонажи.</p>
+      <div class="frame-tags"><span class="tag">gold</span><span class="tag">polygon</span><span class="tag">ethereal</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Персонажи</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="03" data-name="Howl">
+        <div class="name-card-top"><span class="name">Howl</span><span class="source-tag">Howl's Moving Castle</span></div>
+        <div class="backstory"><strong>Howl</strong> — маг, одержимый красотой. «Я не вижу смысла жить, если я не могу быть красивым». Золотые волосы, драгоценные камни, огонь Кальцифера. Полуободковая золотая оправа — его эстетика: не полностью скрывает, а обрамляет, как оправа драгоценности. 4 буквы, выдох.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="03" data-name="Haku">
+        <div class="name-card-top"><span class="name">Haku</span><span class="source-tag">Spirited Away</span></div>
+        <div class="backstory"><strong>Haku</strong> — речной дракон в человеческом обличии. Полигональные чешуйки золотого дракона, мерцающие на солнце. Добрый, загадочный, двойственный (человек / дракон, как эта оправа — золото / стекло). 4 буквы, японское, гендерно-нейтральное. Эфемерный, драгоценный.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="03" data-name="Nausicaa">
+        <div class="name-card-top"><span class="name">Nausicaa</span><span class="source-tag">Nausicaä of the Valley of the Wind</span></div>
+        <div class="backstory"><strong>Nausicaä</strong> — принцесса-воин с золотым сердцем. Парит на глайдере, как ювелирное украшение в ветре. Она видит красоту в токсичном лесу — как золотой полигон видит свет в любой обстановке. Самый добрый персонаж Миядзаки. 8 букв, греческое (Одиссея) + японский дух.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 04 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 04</span><img src="frame-04.png" alt="Frame 04"></div>
+    <div class="frame-info">
+      <h3>Browline — Titanium + Acetate</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Интеллект + дерзость. Нужны <strong style="color:var(--text)">умные, хитрые, философские</strong> персонажи.</p>
+      <div class="frame-tags"><span class="tag">intellectual</span><span class="tag">bold</span><span class="tag">dual nature</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Персонажи</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="04" data-name="Lupin">
+        <div class="name-card-top"><span class="name">Lupin</span><span class="source-tag">Lupin III</span></div>
+        <div class="backstory"><strong>Lupin III</strong> — гениальный вор-джентльмен. Всегда план, всегда маскировка, всегда двойное дно. Ацетат (маска) поверх титана (истинное «я»). Browline = интеллектуальная дерзость Lupin: он умнее всех в комнате, но прикидывается дураком. 5 букв, классика. Никогда не причиняет зла невинным.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Togusa">
+        <div class="name-card-top"><span class="name">Togusa</span><span class="source-tag">Ghost in the Shell</span></div>
+        <div class="backstory"><strong>Togusa</strong> — единственный полностью человеческий детектив в Секции 9. Аналоговый среди цифровых. Носит револьвер среди автоматов. Browline — это Togusa: ацетат (органика, человечность) поверх титана (технология). Интеллектуал, верящий в человеческое начало. 6 букв, японское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="04" data-name="Kino">
+        <div class="name-card-top"><span class="name">Kino</span><span class="source-tag">Kino's Journey</span></div>
+        <div class="backstory"><strong>Kino</strong> — путешественник-философ на мотоцикле Hermes. Посещает страны ровно на 3 дня: достаточно чтобы понять, мало чтобы привыкнуть. Нейтральный наблюдатель, не судит. Browline — оправа наблюдателя: тяжёлая бровь = серьёзный взгляд. 4 буквы, гендерно-нейтральное. Глубочайшее «для тех кто знает».</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 05 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 05</span><img src="frame-05.png" alt="Frame 05"></div>
+    <div class="frame-info">
+      <h3>Wide Rectangular Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Широкий, архитектурный, масштабный. Нужны <strong style="color:var(--text)">мощные, широкие, несокрушимые</strong> персонажи.</p>
+      <div class="frame-tags"><span class="tag">wide</span><span class="tag">massive</span><span class="tag">architectural</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Персонажи</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="05" data-name="Kaneda">
+        <div class="name-card-top"><span class="name">Kaneda</span><span class="source-tag">Akira</span></div>
+        <div class="backstory"><strong>Shotaro Kaneda</strong> — красная куртка, красный мотоцикл, широкий взгляд на Нео-Токио. Лидер банки, но сражается за друга и город. Широкий прямоугольный силуэт мотоцикла = эта оправа. «TETSUOOOO!» — крик через всю ширину экрана. 6 букв, культовое японское имя.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Guts">
+        <div class="name-card-top"><span class="name">Guts</span><span class="source-tag">Berserk</span></div>
+        <div class="backstory"><strong>Guts</strong> — Чёрный Мечник с Dragon Slayer — мечом шире человеческого тела. Самый широкий, массивный воин в аниме. Но: он добрый в ядре — защищает тех, кого любит, несмотря на судьбу. Эта оправа — Dragon Slayer: прямоугольная, неумолимая, масштабная. 4 буквы, один удар.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Jet">
+        <div class="name-card-top"><span class="name">Jet</span><span class="source-tag">Cowboy Bebop</span></div>
+        <div class="backstory"><strong>Jet Black</strong> — бывший коп, якорь Bebop. Широкоплечий, надёжный, готовит бонсай и ловит преступников. Моральный центр команды хаоса. Широкая оправа = широкие плечи Jet: несёт всех. 3 буквы — самое короткое имя, самый основательный человек. Также: jet = реактивный — сила + скорость.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="05" data-name="Batou">
+        <div class="name-card-top"><span class="name">Batou</span><span class="source-tag">Ghost in the Shell</span></div>
+        <div class="backstory"><strong>Batou</strong> — массивный киборг Секции 9 с самым добрым сердцем (кормит бездомного бассет-хаунда). Широкие плечи, широкое лицо, кибернетические глаза-линзы. Эта оправа — его масштаб: прямоугольная, конструктивная, но за бронёй — нежность. 5 букв, японское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 06 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 06</span><img src="frame-06.png" alt="Frame 06"></div>
+    <div class="frame-info">
+      <h3>Soft Geometric Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Мягкая геометрия, баланс, повседневность. Нужны <strong style="color:var(--text)">тихие, мудрые, созерцательные</strong> персонажи.</p>
+      <div class="frame-tags"><span class="tag">soft</span><span class="tag">balanced</span><span class="tag">quiet</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Персонажи</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="06" data-name="Ginko">
+        <div class="name-card-top"><span class="name">Ginko</span><span class="source-tag">Mushishi</span></div>
+        <div class="backstory"><strong>Ginko</strong> — странствующий мастер муси (примитивных духов). Мягкий, наблюдательный, нейтральный. Лечит, не воюет. Один видящий глаз — как мягкий фокус этой оправы. Ходит по Японии, курит, думает. Эта оправа — его взгляд: между мирами, между формами, между сезонами. 5 букв. Самый тихий герой в аниме.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="06" data-name="Chihiro">
+        <div class="name-card-top"><span class="name">Chihiro</span><span class="source-tag">Spirited Away</span></div>
+        <div class="backstory"><strong>Chihiro</strong> — обычная девочка, спасшая родителей мягкой силой. Не магия, не кулаки — а повседневная храбрость: работать, помогать, не сдаваться. Мягкая геометрия этой оправы = Chihiro: не кричит, но выдерживает. 7 букв, японское, узнаваемое. Повседневный героизм.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="06" data-name="Rakka">
+        <div class="name-card-top"><span class="name">Rakka</span><span class="source-tag">Haibane Renmei</span></div>
+        <div class="backstory"><strong>Rakka</strong> — ангелоподобное существо с серыми крыльями, ищущее смысл бытия. <em>Haibane Renmei</em> — глубочайшее «для тех кто знает» аниме (ABe Yoshitoshi, 2002). Мягкая, тихая, вопрошающая. Эта оправа = её нимб: не совсем круг, не совсем квадрат, мягко парит. 5 букв.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 07 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 07</span><img src="frame-07.png" alt="Frame 07"></div>
+    <div class="frame-info">
+      <h3>Oval — Acetate + Titanium Layered</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Два слоя, два материала, скрытая глубина. Нужны <strong style="color:var(--text)">персонажи о двойственности и слоях идентичности</strong>.</p>
+      <div class="frame-tags"><span class="tag">layered</span><span class="tag">dual</span><span class="tag">hidden depth</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Персонажи</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="07" data-name="Motoko">
+        <div class="name-card-top"><span class="name">Motoko</span><span class="source-tag">Ghost in the Shell</span></div>
+        <div class="backstory"><strong>Motoko Kusanagi</strong> — THE персонаж о слоях. «Ghost» (сознание) внутри «Shell» (кибертела). Кто она без оболочки? Ацетат = shell, титан = ghost. Эта оправа буквально Ghost in the Shell: два материала, один поверх другого, вместе создающие идентичность. 6 букв, японское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Lain">
+        <div class="name-card-top"><span class="name">Lain</span><span class="source-tag">Serial Experiments Lain</span></div>
+        <div class="backstory"><strong>Lain Iwakura</strong> — тихая девочка, чей цифровой аватар живёт своей жизнью. Реальный мир (ацетат) поверх виртуального (титан). Или наоборот? Слои реальности, которые невозможно разделить. 4 буквы, культовое 1998 года. «Для тех кто знает» уровень: максимальный.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Baron">
+        <div class="name-card-top"><span class="name">Baron</span><span class="source-tag">The Cat Returns / Whisper of the Heart</span></div>
+        <div class="backstory"><strong>Baron Humbert von Gikkingen</strong> — статуэтка кота-джентльмена, оживающая в магическом мире. Две реальности: фарфоровый объект (ацетат, внешность) и живой благородный кот (титан, суть). Винтажный, элегантный, овальный. 5 букв, аристократичное звучание. Ghibli-глубина.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="07" data-name="Casca">
+        <div class="name-card-top"><span class="name">Casca</span><span class="source-tag">Berserk</span></div>
+        <div class="backstory"><strong>Casca</strong> — воительница Band of the Hawk. Слои идентичности: лидер / любимая / сломленная / возрождённая. Под доспехом (ацетат) — уязвимость (титан). Под уязвимостью — несокрушимый дух. Добрая, сильная, сложная. 5 букв, латинское звучание.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 08 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 08</span><img src="frame-08.png" alt="Frame 08"></div>
+    <div class="frame-info">
+      <h3>Navigator — Double Bridge</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Навигатор, двойной мост, уверенность. Нужны <strong style="color:var(--text)">стрелки, пилоты, те кто знает курс</strong>.</p>
+      <div class="frame-tags"><span class="tag">navigator</span><span class="tag">commanding</span><span class="tag">directional</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Персонажи</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="08" data-name="Jigen">
+        <div class="name-card-top"><span class="name">Jigen</span><span class="source-tag">Lupin III</span></div>
+        <div class="backstory"><strong>Daisuke Jigen</strong> — лучший стрелок мира. Всегда в шляпе, всегда знает угол. Навигация пули: 0.3 секунды от кобуры до цели. Двойной мост этой оправы = двойной прицел Jigen. Лоялен Lupin до смерти (добрый). 5 букв, японское. Стрелок-навигатор.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="08" data-name="Revy">
+        <div class="name-card-top"><span class="name">Revy</span><span class="source-tag">Black Lagoon</span></div>
+        <div class="backstory"><strong>Revy «Two Hands»</strong> — навигатор Южно-Китайского моря с двумя Beretta. Грубая, но с моральным кодексом. Двойной мост = Two Hands. Плавает через хаос, всегда знает выход. Оправа-навигатор с firepower. 4 буквы, короткий удар.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="08" data-name="Balsa">
+        <div class="name-card-top"><span class="name">Balsa</span><span class="source-tag">Moribito</span></div>
+        <div class="backstory"><strong>Balsa** — телохранитель с копьём, спасшая 8 жизней чтобы искупить 8 смертей. Навигатор между мирами: духовным и человеческим. Командная, направленная, защищающая. <em>Moribito: Guardian of the Spirit</em> — «для тех кто знает» уровень высочайший. 5 букв, латиноамериканское звучание.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== FRAME 09 ======================== -->
+<div class="frame-card">
+  <div class="frame-header">
+    <div class="frame-image"><span class="frame-number">Frame 09</span><img src="frame-09.png" alt="Frame 09"></div>
+    <div class="frame-info">
+      <h3>Gold Butterfly Titanium</h3>
+      <p style="color:var(--text-muted); font-size:14px;">Золотой butterfly, женственный, тёплый. Нужны <strong style="color:var(--text)">сильные женщины с золотой энергией</strong>.</p>
+      <div class="frame-tags"><span class="tag">gold</span><span class="tag">butterfly</span><span class="tag">feminine</span><span class="tag">warm</span></div>
+    </div>
+  </div>
+  <div class="names-section">
+    <h4>Персонажи</h4>
+    <div class="names-grid">
+      <div class="name-card" data-frame="09" data-name="Faye">
+        <div class="name-card-top"><span class="name">Faye</span><span class="source-tag">Cowboy Bebop</span></div>
+        <div class="backstory"><strong>Faye Valentine</strong> — космический охотник за головами с золотым сердцем, скрытым под бронёй сарказма. Проснулась из криосна без памяти — и всё равно летит вперёд. Butterfly = Faye: красивая, яркая, казалось бы хрупкая — но выживает всегда. 4 буквы, женственное, тёплое звучание.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="09" data-name="Fujiko">
+        <div class="name-card-top"><span class="name">Fujiko</span><span class="source-tag">Lupin III</span></div>
+        <div class="backstory"><strong>Fujiko Mine</strong> — THE женская икона аниме. Золотая, дерзкая, свободная. Не злодейка — нейтральна: играет на своей стороне. <em>The Woman Called Fujiko Mine</em> (2012) — арт-нуар шедевр. Butterfly + gold = Fujiko: сияющая, непредсказуемая, опасная красота. 6 букв, японское.</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+      <div class="name-card" data-frame="09" data-name="San">
+        <div class="name-card-top"><span class="name">San</span><span class="source-tag">Princess Mononoke</span></div>
+        <div class="backstory"><strong>San</strong> — Принцесса Мононоке, волчья девушка с золотыми глазами. Дикая, яростная, но защищает лес и его обитателей. Butterfly как крылья: San парит между миром людей и миром духов. 3 буквы — самое короткое имя, самый дикий характер. Японское «три» (三).</div>
+        <div class="vote-row"><button class="vote-btn yes" onclick="vote(this,'yes')">👍</button><button class="vote-btn maybe" onclick="vote(this,'maybe')">🤔</button><button class="vote-btn no" onclick="vote(this,'no')">👎</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>PYE OPTICS · ANIME EDITION · 30 CHARACTERS · FEBRUARY 2026</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'pye-anime-votes';
+function getVotes() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } }
+function saveVotes(v) { localStorage.setItem(STORAGE_KEY, JSON.stringify(v)); }
+function getVoterName() { return document.getElementById('voterName').value.trim() || 'Anonymous'; }
+
+function vote(btn, type) {
+  const card = btn.closest('.name-card');
+  const key = card.dataset.frame + '::' + card.dataset.name;
+  const votes = getVotes();
+  const voter = getVoterName();
+  if (!votes[key]) votes[key] = {};
+  if (votes[key][voter] === type) { delete votes[key][voter]; card.removeAttribute('data-my-vote'); }
+  else { votes[key][voter] = type; card.setAttribute('data-my-vote', type); }
+  saveVotes(votes); renderVotes();
+}
+
+function renderVotes() {
+  const votes = getVotes(); const voter = getVoterName();
+  let totalYes = 0, totalNo = 0;
+  document.querySelectorAll('.name-card').forEach(card => {
+    const key = card.dataset.frame + '::' + card.dataset.name;
+    const nv = votes[key] || {}; const mv = nv[voter];
+    if (mv) card.setAttribute('data-my-vote', mv); else card.removeAttribute('data-my-vote');
+    const c = { yes: 0, maybe: 0, no: 0 };
+    Object.values(nv).forEach(v => { if (c[v] !== undefined) c[v]++; });
+    card.querySelectorAll('.vote-btn').forEach(btn => {
+      const t = btn.classList.contains('yes') ? 'yes' : btn.classList.contains('no') ? 'no' : 'maybe';
+      btn.classList.toggle('active', mv === t);
+      const ex = btn.querySelector('.count'); if (ex) ex.remove();
+      if (c[t] > 0) { const b = document.createElement('span'); b.className='count'; b.textContent=c[t]; btn.appendChild(b); }
+    });
+    if (mv==='yes') totalYes++; if (mv==='no') totalNo++;
+  });
+  document.getElementById('statYes').textContent = totalYes;
+  document.getElementById('statNo').textContent = totalNo;
+}
+
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+
+function exportResults() {
+  const votes = getVotes(); const lines = ['PYE Titanium — Anime Edition Results\n'];
+  let cf = '';
+  document.querySelectorAll('.name-card').forEach(card => {
+    const f = 'Frame ' + card.dataset.frame;
+    if (f !== cf) { cf = f; lines.push('\n' + f + ':'); }
+    const key = card.dataset.frame + '::' + card.dataset.name;
+    const nv = votes[key] || {};
+    const y=[], n=[], m=[];
+    Object.entries(nv).forEach(([v,t])=>{ if(t==='yes')y.push(v); if(t==='no')n.push(v); if(t==='maybe')m.push(v); });
+    let s = '  ' + card.dataset.name;
+    const p = [];
+    if (y.length) p.push('👍 '+y.join(', ')); if (m.length) p.push('🤔 '+m.join(', ')); if (n.length) p.push('👎 '+n.join(', '));
+    if (p.length) s += ' — ' + p.join(' | ');
+    lines.push(s);
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>showToast('Результаты скопированы!'));
+}
+
+function clearVotes() {
+  if (!confirm('Сбросить все голоса?')) return;
+  const votes = getVotes(); const voter = getVoterName();
+  Object.keys(votes).forEach(k => { delete votes[k][voter]; });
+  saveVotes(votes); renderVotes(); showToast('Голоса сброшены');
+}
+
+const sn = localStorage.getItem('pye-naming-voter');
+if (sn) document.getElementById('voterName').value = sn;
+document.getElementById('voterName').addEventListener('input', function() {
+  localStorage.setItem('pye-naming-voter', this.value); renderVotes();
+});
+renderVotes();
+</script>
+</body>
+</html>
