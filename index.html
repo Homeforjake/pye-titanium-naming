@@ -64,6 +64,11 @@
   .export-btn:hover { background: var(--surface-hover); border-color: #444; }
   .export-btn.accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
 
+  .culture-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+  .culture-nav a { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; transition: all 0.15s; }
+  .culture-nav a:hover { border-color: #444; color: var(--text); }
+  .culture-nav a.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
   .frame-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 40px; overflow: hidden; }
 
   .frame-header { display: flex; align-items: stretch; min-height: 320px; }
@@ -155,6 +160,17 @@
 </head>
 <body>
 <div class="container">
+
+<nav class="culture-nav">
+  <a href="index.html" class="active">Основной (Wave 3)</a>
+  <a href="anime.html">Аниме</a>
+  <a href="cinema.html">Кино</a>
+  <a href="books.html">Литература</a>
+  <a href="wave4.html">Wave 4a</a>
+  <a href="wave4b.html">Wave 4b</a>
+  <a href="wave4c.html">Wave 4c</a>
+  <a href="wave4d.html">Wave 4d</a>
+</nav>
 
 <header>
   <h1>PYE Optics</h1>
