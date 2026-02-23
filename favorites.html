@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYE Titanium — Избранное</title>
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --surface-hover: #222;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --accent: #4ade80;
+    --accent-dim: rgba(74, 222, 128, 0.12);
+    --green: #4ade80;
+    --green-dim: rgba(74, 222, 128, 0.12);
+    --red: #f87171;
+    --red-dim: rgba(248, 113, 113, 0.10);
+    --yellow: #fbbf24;
+    --yellow-dim: rgba(251, 191, 36, 0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif; line-height: 1.6; padding: 40px 20px; min-height: 100vh; }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 48px; }
+  header h1 { font-size: 13px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  header h2 { font-size: 36px; font-weight: 300; letter-spacing: -0.5px; }
+  header .subtitle { font-size: 14px; color: var(--text-muted); margin-top: 8px; max-width: 560px; margin-left: auto; margin-right: auto; }
+
+  .voter-bar { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; }
+  .voter-bar label { font-size: 13px; color: var(--text-muted); }
+  .voter-bar input { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; color: var(--text); font-size: 14px; width: 180px; outline: none; }
+  .voter-bar input:focus { border-color: var(--accent); }
+
+  .stats { display: flex; justify-content: center; gap: 40px; margin-top: 24px; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 300; color: var(--green); }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-top: 2px; }
+
+  .culture-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+  .culture-nav a { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; transition: all 0.15s; }
+  .culture-nav a:hover { border-color: #444; color: var(--text); }
+  .culture-nav a.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  .export-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; }
+  .export-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 24px; color: var(--text); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .export-btn:hover { background: var(--surface-hover); border-color: #444; }
+  .export-btn.accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  .empty-state { text-align: center; padding: 80px 20px; }
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state h3 { font-size: 20px; font-weight: 400; margin-bottom: 8px; }
+  .empty-state p { color: var(--text-muted); font-size: 14px; max-width: 400px; margin: 0 auto; }
+
+  .frame-section { margin-bottom: 48px; }
+  .frame-section-header { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .frame-thumb { width: 80px; height: 60px; background: #fff; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .frame-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; padding: 6px; }
+  .frame-section-header .frame-title { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); }
+  .frame-section-header .frame-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .frame-section-header .frame-count { font-size: 20px; font-weight: 300; color: var(--green); margin-left: auto; flex-shrink: 0; }
+
+  .fav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .fav-card { padding: 16px; border-radius: 12px; border: 1px solid rgba(74, 222, 128, 0.15); background: var(--green-dim); transition: all 0.15s; }
+  .fav-card:hover { border-color: rgba(74, 222, 128, 0.3); }
+  .fav-card .name { font-size: 20px; font-weight: 400; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .fav-card .source { font-size: 11px; color: var(--accent); letter-spacing: 0.5px; margin-bottom: 6px; }
+  .fav-card .source-tag { font-size: 9px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; background: rgba(74, 222, 128, 0.15); color: var(--green); display: inline-block; }
+  .fav-card .remove-btn { float: right; width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--border); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #666; transition: all 0.15s; }
+  .fav-card .remove-btn:hover { background: var(--red-dim); border-color: rgba(248, 113, 113, 0.25); color: var(--red); }
+
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 12px 24px; border-radius: 10px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
+  .toast.show { opacity: 1; }
+
+  footer { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 12px; letter-spacing: 1px; }
+
+  @media (max-width: 600px) {
+    .fav-grid { grid-template-columns: 1fr; }
+    header h2 { font-size: 28px; }
+    .frame-section-header { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav class="culture-nav">
+  <a href="index.html">Основной (Wave 3)</a>
+  <a href="anime.html">Аниме</a>
+  <a href="cinema.html">Кино</a>
+  <a href="books.html">Литература</a>
+  <a href="wave4.html">Wave 4a</a>
+  <a href="wave4b.html">Wave 4b</a>
+  <a href="wave4c.html">Wave 4c</a>
+  <a href="wave4d.html">Wave 4d</a>
+  <a href="favorites.html" class="active">★ Избранное</a>
+</nav>
+
+<header>
+  <h1>PYE Optics</h1>
+  <h2>★ Избранное</h2>
+  <p class="subtitle">Все названия, которые ты лайкнул 👍 со всех страниц — в одном месте, разделённые по моделям.</p>
+  <div class="voter-bar">
+    <label>Твоё имя:</label>
+    <input type="text" id="voterName" placeholder="Введи имя..." autocomplete="off">
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Избранных</div></div>
+    <div class="stat"><div class="stat-value" id="statFrames">0</div><div class="stat-label">Моделей</div></div>
+  </div>
+</header>
+
+<div class="export-bar">
+  <button class="export-btn accent" onclick="exportFavorites()">Скопировать избранное</button>
+</div>
+
+<div id="content"></div>
+
+<footer>PYE OPTICS · ИЗБРАННОЕ · ВСЕ ВОЛНЫ</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const ALL_SOURCES = [
+  { key: 'pye-naming-votes', label: 'Wave 3' },
+  { key: 'pye-anime-votes', label: 'Аниме' },
+  { key: 'pye-cinema-votes', label: 'Кино' },
+  { key: 'pye-books-votes', label: 'Литература' },
+  { key: 'pye-wave4-votes', label: 'Wave 4a' },
+  { key: 'pye-wave4b-votes', label: 'Wave 4b' },
+  { key: 'pye-wave4c-votes', label: 'Wave 4c' },
+  { key: 'pye-wave4d-votes', label: 'Wave 4d' },
+];
+
+const FRAME_META = {
+  '01': { title: 'Frame 01 — Geometric Titanium', subtitle: 'Угловатая геометрия, точные линии', img: 'frame-01.png' },
+  '02': { title: 'Frame 02 — Round Titanium', subtitle: 'Классический круг, полнота, винтаж', img: 'frame-02.png' },
+  '03': { title: 'Frame 03 — Semi-Rimless Gold Polygon', subtitle: 'Золотой полигон, ювелирный, эфемерный', img: 'frame-03.png' },
+  '04': { title: 'Frame 04 — Browline', subtitle: 'Интеллект + дерзость, два материала', img: 'frame-04.png' },
+  '05': { title: 'Frame 05 — Wide Rectangular', subtitle: 'Широкий, архитектурный, масштабный', img: 'frame-05.png' },
+  '06': { title: 'Frame 06 — Soft Geometric', subtitle: 'Мягкая геометрия, баланс, повседневность', img: 'frame-06.png' },
+  '07': { title: 'Frame 07 — Oval Layered', subtitle: 'Два слоя, два материала, скрытая глубина', img: 'frame-07.png' },
+  '08': { title: 'Frame 08 — Navigator', subtitle: 'Навигатор, двойной мост, уверенность', img: 'frame-08.png' },
+  '09': { title: 'Frame 09 — Gold Butterfly', subtitle: 'Золотой butterfly, женственный, тёплый', img: 'frame-09.png' },
+};
+
+function getVoterName() {
+  return document.getElementById('voterName').value.trim() || 'Anonymous';
+}
+
+function collectFavorites() {
+  const voter = getVoterName();
+  const favorites = {};
+
+  ALL_SOURCES.forEach(src => {
+    let votes;
+    try { votes = JSON.parse(localStorage.getItem(src.key)) || {}; } catch { votes = {}; }
+
+    Object.entries(votes).forEach(([key, voters]) => {
+      if (voters[voter] === 'yes') {
+        const [frame, name] = key.split('::');
+        if (!favorites[frame]) favorites[frame] = [];
+        if (!favorites[frame].find(f => f.name === name && f.source === src.label)) {
+          favorites[frame].push({ name, source: src.label, storageKey: src.key, voteKey: key });
+        }
+      }
+    });
+  });
+
+  return favorites;
+}
+
+function removeFavorite(storageKey, voteKey) {
+  const voter = getVoterName();
+  let votes;
+  try { votes = JSON.parse(localStorage.getItem(storageKey)) || {}; } catch { votes = {}; }
+  if (votes[voteKey] && votes[voteKey][voter]) {
+    delete votes[voteKey][voter];
+    localStorage.setItem(storageKey, JSON.stringify(votes));
+  }
+  render();
+  showToast('Убрано из избранного');
+}
+
+function render() {
+  const favorites = collectFavorites();
+  const container = document.getElementById('content');
+  const frames = Object.keys(favorites).sort();
+  let totalCount = 0;
+
+  if (frames.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">🤷</div>
+        <h3>Пока ничего нет</h3>
+        <p>Заходи на страницы с названиями и жми 👍 — лайкнутые появятся здесь автоматически.</p>
+      </div>`;
+    document.getElementById('statTotal').textContent = '0';
+    document.getElementById('statFrames').textContent = '0';
+    return;
+  }
+
+  let html = '';
+  frames.forEach(frame => {
+    const items = favorites[frame];
+    totalCount += items.length;
+    const meta = FRAME_META[frame] || { title: 'Frame ' + frame, subtitle: '', img: '' };
+
+    html += `<div class="frame-section">
+      <div class="frame-section-header">
+        <div class="frame-thumb"><img src="${meta.img}" alt="${meta.title}"></div>
+        <div>
+          <div class="frame-title">${meta.title}</div>
+          <div class="frame-subtitle">${meta.subtitle}</div>
+        </div>
+        <div class="frame-count">${items.length}</div>
+      </div>
+      <div class="fav-grid">`;
+
+    items.forEach(item => {
+      html += `<div class="fav-card">
+        <button class="remove-btn" onclick="removeFavorite('${item.storageKey}','${item.voteKey}')" title="Убрать из избранного">✕</button>
+        <div class="name">${item.name}</div>
+        <span class="source-tag">${item.source}</span>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+  document.getElementById('statTotal').textContent = totalCount;
+  document.getElementById('statFrames').textContent = frames.length;
+}
+
+function exportFavorites() {
+  const favorites = collectFavorites();
+  const frames = Object.keys(favorites).sort();
+  const lines = ['PYE Titanium — Избранное (' + getVoterName() + ')\n'];
+
+  frames.forEach(frame => {
+    const meta = FRAME_META[frame] || { title: 'Frame ' + frame };
+    lines.push('\n' + meta.title + ':');
+    favorites[frame].forEach(item => {
+      lines.push('  👍 ' + item.name + ' (' + item.source + ')');
+    });
+  });
+
+  navigator.clipboard.writeText(lines.join('\n')).then(() => showToast('Избранное скопировано!'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+const sn = localStorage.getItem('pye-naming-voter');
+if (sn) document.getElementById('voterName').value = sn;
+document.getElementById('voterName').addEventListener('input', function() {
+  localStorage.setItem('pye-naming-voter', this.value);
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
